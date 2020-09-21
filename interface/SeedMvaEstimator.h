@@ -14,8 +14,8 @@
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidate.h"
 #include "DataFormats/RecoCandidate/interface/RecoChargedCandidateFwd.h"
 
-#include "DataFormats/L1TCorrelator/interface/TkMuon.h"
-#include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
+// #include "DataFormats/L1TCorrelator/interface/TkMuon.h"
+// #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
 
 #include <memory>
 #include <string>
@@ -35,8 +35,7 @@ public:
     GlobalVector,
     GlobalPoint,
     edm::Handle<l1t::MuonBxCollection>,
-    edm::Handle<reco::RecoChargedCandidateCollection>,
-    edm::Handle<l1t::TkMuonCollection>
+    edm::Handle<reco::RecoChargedCandidateCollection>
   ) const;
 
 private:
@@ -47,6 +46,5 @@ private:
 
   void getL1MuonVariables( const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::MuonBxCollection>, float&, float&, float&, float& ) const;
   void getL2MuonVariables( const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<reco::RecoChargedCandidateCollection>, float&, float&, float&, float& ) const;
-  void getL1TTVariables(   const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::TkMuonCollection>, float&, float& ) const;
 };
 #endif

@@ -45,9 +45,7 @@ namespace {
     kDPhidRL2SeedP,    // 24
     kDRdPhiL2SeedX,    // 25
     kDPhidPhiL2SeedX,  // 26
-    kDRL1TkMu,         // 27
-    kDPhiL1TkMu,       // 28
-    kLast              // 29
+    kLast              // 27
   };
 }  // namespace
 
@@ -119,32 +117,11 @@ void SeedMvaEstimator::getL2MuonVariables(
   }
 }
 
-void SeedMvaEstimator::getL1TTVariables(
-  const TrajectorySeed& seed,
-  GlobalVector global_p,
-  GlobalPoint  global_x,
-  edm::Handle<l1t::TkMuonCollection> h_L1TkMu,
-  float& DRL1TkMu,
-  float& DPhiL1TkMu ) const {
-
-  for(auto L1TkMu=h_L1TkMu->begin(); L1TkMu!=h_L1TkMu->end(); ++L1TkMu)
-  {
-    auto TkRef = L1TkMu->trkPtr();
-    float DRL1TkMu_tmp   = reco::deltaR( *TkRef, global_p);
-    float DPhiL1TkMu_tmp = reco::deltaPhi( TkRef->phi(), global_p.phi());
-    if( DRL1TkMu_tmp < DRL1TkMu ) {
-      DRL1TkMu   = DRL1TkMu_tmp;
-      DPhiL1TkMu = DPhiL1TkMu_tmp;
-    }
-  }
-}
-
 float SeedMvaEstimator::computeMva( const TrajectorySeed& seed,
   GlobalVector global_p,
   GlobalPoint  global_x,
   edm::Handle<l1t::MuonBxCollection> h_L1Muon,
-  edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon,
-  edm::Handle<l1t::TkMuonCollection> h_L1TkMu
+  edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon
 ) const {
 
   float var[kLast]{};
@@ -184,10 +161,6 @@ float SeedMvaEstimator::computeMva( const TrajectorySeed& seed,
   float dPhidPhiL2SeedX = initDRdPhi;
   getL2MuonVariables( seed, global_p, global_x, h_L2Muon, dRdRL2SeedP, dPhidRL2SeedP, dRdPhiL2SeedX, dPhidPhiL2SeedX );
 
-  float DRL1TkMu = initDRdPhi;
-  float DPhiL1TkMu = initDRdPhi;
-  getL1TTVariables( seed, global_p, global_x, h_L1TkMu, DRL1TkMu, DPhiL1TkMu );
-
   var[kDRdRL1SeedP]     = dRdRL1SeedP;
   var[kDPhidRL1SeedP]   = dPhidRL1SeedP;
   var[kDRdPhiL1SeedX]   = dRdPhiL1SeedX;
@@ -196,8 +169,6 @@ float SeedMvaEstimator::computeMva( const TrajectorySeed& seed,
   var[kDPhidRL2SeedP]   = dPhidRL2SeedP;
   var[kDRdPhiL2SeedX]   = dRdPhiL2SeedX;
   var[kDPhidPhiL2SeedX] = dPhidPhiL2SeedX;
-  var[kDRL1TkMu]        = DRL1TkMu;
-  var[kDPhiL1TkMu]      = DPhiL1TkMu;
 
   for(int iv=0; iv<kLast; ++iv) {
     var[iv] = (var[iv] - scale_mean_.at(iv)) / scale_std_.at(iv);
