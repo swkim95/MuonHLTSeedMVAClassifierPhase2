@@ -183,9 +183,10 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 {
 	auto result = std::make_unique<TrajectorySeedCollection>();
 
-	if( rejectAll_ )
+	if( rejectAll_ ) {
 		iEvent.put(std::move(result));
 		return;
+	}
 
 	edm::ESHandle<TrackerGeometry> trkGeom;
 	iSetup.get<TrackerDigiGeometryRecord>().get(trkGeom);
