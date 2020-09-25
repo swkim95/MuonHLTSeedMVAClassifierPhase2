@@ -127,20 +127,6 @@ MuonHLTSeedMVAClassifier::MuonHLTSeedMVAClassifier(const edm::ParameterSet& iCon
 	t_L1Muon_(consumes<l1t::MuonBxCollection>               (iConfig.getParameter<edm::InputTag>("L1Muon"))),
 	t_L2Muon_(consumes<reco::RecoChargedCandidateCollection>(iConfig.getParameter<edm::InputTag>("L2Muon"))),
 
-	mvaFile_B_0_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_0")),
-	mvaFile_B_1_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_1")),
-	mvaFile_B_2_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_2")),
-	mvaFile_B_3_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_3")),
-	mvaFile_E_0_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_0")),
-	mvaFile_E_1_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_1")),
-	mvaFile_E_2_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_2")),
-	mvaFile_E_3_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_3")),
-
-	mvaScaleMean_B_(iConfig.getParameter<std::vector<double>>("mvaScaleMean_B")),
-	mvaScaleStd_B_ (iConfig.getParameter<std::vector<double>>("mvaScaleStd_B")),
-	mvaScaleMean_E_(iConfig.getParameter<std::vector<double>>("mvaScaleMean_E")),
-	mvaScaleStd_E_ (iConfig.getParameter<std::vector<double>>("mvaScaleStd_E")),
-
 	mvaCut_B_      (iConfig.getParameter<double>("mvaCut_B")),
 	mvaCut_E_      (iConfig.getParameter<double>("mvaCut_E")),
 
@@ -153,6 +139,20 @@ MuonHLTSeedMVAClassifier::MuonHLTSeedMVAClassifier(const edm::ParameterSet& iCon
 	produces<TrajectorySeedCollection>();
 
 	if(!rejectAll_) {
+		mvaFile_B_0_   = iConfig.getParameter<edm::FileInPath>("mvaFile_B_0");
+		mvaFile_B_1_   = iConfig.getParameter<edm::FileInPath>("mvaFile_B_1");
+		mvaFile_B_2_   = iConfig.getParameter<edm::FileInPath>("mvaFile_B_2");
+		mvaFile_B_3_   = iConfig.getParameter<edm::FileInPath>("mvaFile_B_3");
+		mvaFile_E_0_   = iConfig.getParameter<edm::FileInPath>("mvaFile_E_0");
+		mvaFile_E_1_   = iConfig.getParameter<edm::FileInPath>("mvaFile_E_1");
+		mvaFile_E_2_   = iConfig.getParameter<edm::FileInPath>("mvaFile_E_2");
+		mvaFile_E_3_   = iConfig.getParameter<edm::FileInPath>("mvaFile_E_3");
+
+		mvaScaleMean_B_= iConfig.getParameter<std::vector<double>>("mvaScaleMean_B");
+		mvaScaleStd_B_ = iConfig.getParameter<std::vector<double>>("mvaScaleStd_B");
+		mvaScaleMean_E_= iConfig.getParameter<std::vector<double>>("mvaScaleMean_E");
+		mvaScaleStd_E_ = iConfig.getParameter<std::vector<double>>("mvaScaleStd_E");
+
 		mvaEstimator = {
 			make_pair( new SeedMvaEstimator(mvaFile_B_0_, mvaScaleMean_B_, mvaScaleStd_B_),
 			           new SeedMvaEstimator(mvaFile_E_0_, mvaScaleMean_E_, mvaScaleStd_E_) ),
