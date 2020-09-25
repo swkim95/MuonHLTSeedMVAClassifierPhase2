@@ -139,19 +139,19 @@ MuonHLTSeedMVAClassifier::MuonHLTSeedMVAClassifier(const edm::ParameterSet& iCon
 	produces<TrajectorySeedCollection>();
 
 	if(!rejectAll_) {
-		mvaFile_B_0_   = iConfig.getParameter<edm::FileInPath>("mvaFile_B_0");
-		mvaFile_B_1_   = iConfig.getParameter<edm::FileInPath>("mvaFile_B_1");
-		mvaFile_B_2_   = iConfig.getParameter<edm::FileInPath>("mvaFile_B_2");
-		mvaFile_B_3_   = iConfig.getParameter<edm::FileInPath>("mvaFile_B_3");
-		mvaFile_E_0_   = iConfig.getParameter<edm::FileInPath>("mvaFile_E_0");
-		mvaFile_E_1_   = iConfig.getParameter<edm::FileInPath>("mvaFile_E_1");
-		mvaFile_E_2_   = iConfig.getParameter<edm::FileInPath>("mvaFile_E_2");
-		mvaFile_E_3_   = iConfig.getParameter<edm::FileInPath>("mvaFile_E_3");
+		mvaFile_B_0_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B_0");
+		mvaFile_B_1_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B_1");
+		mvaFile_B_2_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B_2");
+		mvaFile_B_3_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B_3");
+		mvaFile_E_0_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E_0");
+		mvaFile_E_1_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E_1");
+		mvaFile_E_2_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E_2");
+		mvaFile_E_3_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E_3");
 
-		mvaScaleMean_B_= iConfig.getParameter<std::vector<double>>("mvaScaleMean_B");
-		mvaScaleStd_B_ = iConfig.getParameter<std::vector<double>>("mvaScaleStd_B");
-		mvaScaleMean_E_= iConfig.getParameter<std::vector<double>>("mvaScaleMean_E");
-		mvaScaleStd_E_ = iConfig.getParameter<std::vector<double>>("mvaScaleStd_E");
+		mvaScaleMean_B_= iConfig.getUntrackedParameter<std::vector<double>>("mvaScaleMean_B");
+		mvaScaleStd_B_ = iConfig.getUntrackedParameter<std::vector<double>>("mvaScaleStd_B");
+		mvaScaleMean_E_= iConfig.getUntrackedParameter<std::vector<double>>("mvaScaleMean_E");
+		mvaScaleStd_E_ = iConfig.getUntrackedParameter<std::vector<double>>("mvaScaleStd_E");
 
 		mvaEstimator = {
 			make_pair( new SeedMvaEstimator(mvaFile_B_0_, mvaScaleMean_B_, mvaScaleStd_B_),
