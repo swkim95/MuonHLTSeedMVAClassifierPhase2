@@ -41,8 +41,8 @@ namespace {
     kDPhidRL1SeedP,    // 20
     // kDRdPhiL1SeedX,    // 21
     // kDPhidPhiL1SeedX,  // 22
-    // kDRdRL2SeedP,      // 23
-    // kDPhidRL2SeedP,    // 24
+    kDRdRL2SeedP,      // 23
+    kDPhidRL2SeedP,    // 24
     // kDRdPhiL2SeedX,    // 25
     // kDPhidPhiL2SeedX,  // 26
     kLast              // 27
@@ -165,8 +165,8 @@ float SeedMvaEstimator::computeMva( const TrajectorySeed& seed,
   var[kDPhidRL1SeedP]   = dPhidRL1SeedP;
   // var[kDRdPhiL1SeedX]   = dRdPhiL1SeedX;
   // var[kDPhidPhiL1SeedX] = dPhidPhiL1SeedX;
-  // var[kDRdRL2SeedP]     = dRdRL2SeedP;
-  // var[kDPhidRL2SeedP]   = dPhidRL2SeedP;
+  var[kDRdRL2SeedP]     = dRdRL2SeedP;
+  var[kDPhidRL2SeedP]   = dPhidRL2SeedP;
   // var[kDRdPhiL2SeedX]   = dRdPhiL2SeedX;
   // var[kDPhidPhiL2SeedX] = dPhidPhiL2SeedX;
 
