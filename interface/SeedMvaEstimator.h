@@ -35,7 +35,8 @@ public:
     GlobalVector,
     GlobalPoint,
     edm::Handle<l1t::MuonBxCollection>,
-    edm::Handle<reco::RecoChargedCandidateCollection>
+    edm::Handle<reco::RecoChargedCandidateCollection>,
+    bool IsFromL1 = false
   ) const;
 
 private:

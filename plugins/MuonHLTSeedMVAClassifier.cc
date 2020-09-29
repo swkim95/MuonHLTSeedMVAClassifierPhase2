@@ -99,6 +99,7 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 		const int nSeedsMax_E_;
 
 		const bool rejectAll_;
+                bool isFromL1 = false;
 
 		std::vector<float> getSeedMva(
 			pairSeedMvaEstimator pairMvaEstimator,
@@ -107,7 +108,8 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 			GlobalPoint  global_x,
 			edm::Handle<l1t::MuonBxCollection>& h_L1Muon,
 			edm::Handle<reco::RecoChargedCandidateCollection>& h_L2Muon,
-			float offset
+			float offset,
+			bool isFromL1 = false
 		);
 };
 
@@ -321,7 +323,8 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 	GlobalPoint  global_x,
 	edm::Handle<l1t::MuonBxCollection>& h_L1Muon,
 	edm::Handle<reco::RecoChargedCandidateCollection>& h_L2Muon,
-	float offset = 0.5
+	float offset = 0.5,
+	bool IsFromL1
 ) {
 	std::vector<float> v_mva = {};
 
@@ -333,7 +336,8 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 				global_p,
 				global_x,
 				h_L1Muon,
-				h_L2Muon
+				h_L2Muon,
+				IsFromL1
 			);
 			v_mva.push_back( (offset + mva) );
 		}
@@ -343,7 +347,8 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 				global_p,
 				global_x,
 				h_L1Muon,
-				h_L2Muon
+				h_L2Muon,
+				IsFromL1
 			);
 			v_mva.push_back( (offset + mva) );
 		}

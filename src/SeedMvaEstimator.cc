@@ -15,37 +15,54 @@ SeedMvaEstimator::SeedMvaEstimator(const edm::FileInPath& weightsfile, std::vect
 }
 
 SeedMvaEstimator::~SeedMvaEstimator() {}
-
+/*
 namespace {
   enum inputIndexes {
     kTsosErr0,         // 0
-    // kTsosErr1,         // 1
+    kTsosErr1,         // 1                                                                                                                                                                                                                
     kTsosErr2,         // 2
-    // kTsosErr3,         // 3
-    // kTsosErr4,         // 4
+    kTsosErr3,         // 3                                                                                                                                                                                                                
+    kTsosErr4,         // 4                                                                                                                                                                                                                
     kTsosErr5,         // 5
-    // kTsosErr6,         // 6
-    // kTsosErr7,         // 7
-    // kTsosErr8,         // 8
-    // kTsosErr9,         // 9
-    // kTsosErr10,        // 10
-    // kTsosErr11,        // 11
-    // kTsosErr12,        // 12
-    // kTsosErr13,        // 13
-    // kTsosErr14,        // 14
+    kTsosErr6,         // 6                                                                                                                                                                                                                
+    kTsosErr7,         // 7                                                                                                                                                                                                                
+    kTsosErr8,         // 8                                                                                                                                                                                                                
+    kTsosErr9,         // 9                                                                                                                                                                                                                
+    kTsosErr10,        // 10                                                                                                                                                                                                               
+    kTsosErr11,        // 11                                                                                                                                                                                                               
+    kTsosErr12,        // 12                                                                                                                                                                                                               
+    kTsosErr13,        // 13                                                                                                                                                                                                               
+    kTsosErr14,        // 14                                                                                                                                                                                                               
     kTsosDxdz,         // 15
     kTsosDydz,         // 16
     kTsosQbp,          // 17
-    // kTsosCharge,       // 18
+    kTsosCharge,       // 18                                                                                                                                                                                                               
     kDRdRL1SeedP,      // 19
     kDPhidRL1SeedP,    // 20
-    // kDRdPhiL1SeedX,    // 21
-    // kDPhidPhiL1SeedX,  // 22
-    // kDRdRL2SeedP,      // 23
-    // kDPhidRL2SeedP,    // 24
-    // kDRdPhiL2SeedX,    // 25
-    // kDPhidPhiL2SeedX,  // 26
+    kDRdPhiL1SeedX,    // 21
+    kDPhidPhiL1SeedX,  // 22                                                                                                                                                                                                               
+    kDRdRL2SeedP,      // 23
+    kDPhidRL2SeedP,    // 24
+    kDRdPhiL2SeedX,    // 25
+    kDPhidPhiL2SeedX,  // 26
     kLast              // 27
+  };
+}  // namespace 
+*/
+namespace {
+  enum inputIndexes {
+    kTsosErr0,         // 0
+    kTsosErr2,         // 1
+    kTsosErr5,         // 2
+    kTsosDxdz,         // 3
+    kTsosDydz,         // 4
+    kTsosQbp,          // 5
+    kDRdRL1SeedP,      // 6
+    kDPhidRL1SeedP,    // 7
+    kLastL1,           // 8
+    kDRdRL2SeedP = 8,  // 8
+    kDPhidRL2SeedP,    // 9
+    kLastL2,           // 10
   };
 }  // namespace
 
@@ -121,58 +138,98 @@ float SeedMvaEstimator::computeMva( const TrajectorySeed& seed,
   GlobalVector global_p,
   GlobalPoint  global_x,
   edm::Handle<l1t::MuonBxCollection> h_L1Muon,
-  edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon
+  edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon,
+  bool IsFromL1
 ) const {
 
-  float var[kLast]{};
+  if(IsFromL1){
+    
+    float var[kLastL1]{};
 
-  var[kTsosErr0]   = seed.startingState().error(0);
-  // var[kTsosErr1]   = seed.startingState().error(1);
-  var[kTsosErr2]   = seed.startingState().error(2);
-  // var[kTsosErr3]   = seed.startingState().error(3);
-  // var[kTsosErr4]   = seed.startingState().error(4);
-  var[kTsosErr5]   = seed.startingState().error(5);
-  // var[kTsosErr6]   = seed.startingState().error(6);
-  // var[kTsosErr7]   = seed.startingState().error(7);
-  // var[kTsosErr8]   = seed.startingState().error(8);
-  // var[kTsosErr9]   = seed.startingState().error(9);
-  // var[kTsosErr10]  = seed.startingState().error(10);
-  // var[kTsosErr11]  = seed.startingState().error(11);
-  // var[kTsosErr12]  = seed.startingState().error(12);
-  // var[kTsosErr13]  = seed.startingState().error(13);
-  // var[kTsosErr14]  = seed.startingState().error(14);
-  var[kTsosDxdz]   = seed.startingState().parameters().dxdz();
-  var[kTsosDydz]   = seed.startingState().parameters().dydz();
-  var[kTsosQbp]    = seed.startingState().parameters().qbp();
-  // var[kTsosCharge] = seed.startingState().parameters().charge();
+    var[kTsosErr0]   = seed.startingState().error(0);
+    // var[kTsosErr1]   = seed.startingState().error(1);
+    var[kTsosErr2]   = seed.startingState().error(2);
+    // var[kTsosErr3]   = seed.startingState().error(3);
+    // var[kTsosErr4]   = seed.startingState().error(4);
+    var[kTsosErr5]   = seed.startingState().error(5);
+    // var[kTsosErr6]   = seed.startingState().error(6);
+    // var[kTsosErr7]   = seed.startingState().error(7);
+    // var[kTsosErr8]   = seed.startingState().error(8);
+    // var[kTsosErr9]   = seed.startingState().error(9);
+    // var[kTsosErr10]  = seed.startingState().error(10);
+    // var[kTsosErr11]  = seed.startingState().error(11);
+    // var[kTsosErr12]  = seed.startingState().error(12);
+    // var[kTsosErr13]  = seed.startingState().error(13);
+    // var[kTsosErr14]  = seed.startingState().error(14);
+    var[kTsosDxdz]   = seed.startingState().parameters().dxdz();
+    var[kTsosDydz]   = seed.startingState().parameters().dydz();
+    var[kTsosQbp]    = seed.startingState().parameters().qbp();
+    // var[kTsosCharge] = seed.startingState().parameters().charge();
 
-  // FIXME: should be configurable
-  float initDRdPhi = 99999.;
+    // FIXME: should be configurable
+    float initDRdPhi = 99999.;
 
-  float dRdRL1SeedP = initDRdPhi;
-  float dPhidRL1SeedP = initDRdPhi;
-  float dRdPhiL1SeedX = initDRdPhi;
-  float dPhidPhiL1SeedX = initDRdPhi;
-  getL1MuonVariables( seed, global_p, global_x, h_L1Muon, dRdRL1SeedP, dPhidRL1SeedP, dRdPhiL1SeedX, dPhidPhiL1SeedX );
+    float dRdRL1SeedP = initDRdPhi;
+    float dPhidRL1SeedP = initDRdPhi;
+    float dRdPhiL1SeedX = initDRdPhi;
+    float dPhidPhiL1SeedX = initDRdPhi;
+    getL1MuonVariables( seed, global_p, global_x, h_L1Muon, dRdRL1SeedP, dPhidRL1SeedP, dRdPhiL1SeedX, dPhidPhiL1SeedX );
 
-  float dRdRL2SeedP = initDRdPhi;
-  float dPhidRL2SeedP = initDRdPhi;
-  float dRdPhiL2SeedX = initDRdPhi;
-  float dPhidPhiL2SeedX = initDRdPhi;
-  getL2MuonVariables( seed, global_p, global_x, h_L2Muon, dRdRL2SeedP, dPhidRL2SeedP, dRdPhiL2SeedX, dPhidPhiL2SeedX );
+    float dRdRL2SeedP = initDRdPhi;
+    float dPhidRL2SeedP = initDRdPhi;
+    float dRdPhiL2SeedX = initDRdPhi;
+    float dPhidPhiL2SeedX = initDRdPhi;
+    getL2MuonVariables( seed, global_p, global_x, h_L2Muon, dRdRL2SeedP, dPhidRL2SeedP, dRdPhiL2SeedX, dPhidPhiL2SeedX );
 
-  var[kDRdRL1SeedP]     = dRdRL1SeedP;
-  var[kDPhidRL1SeedP]   = dPhidRL1SeedP;
-  // var[kDRdPhiL1SeedX]   = dRdPhiL1SeedX;
-  // var[kDPhidPhiL1SeedX] = dPhidPhiL1SeedX;
-  // var[kDRdRL2SeedP]     = dRdRL2SeedP;
-  // var[kDPhidRL2SeedP]   = dPhidRL2SeedP;
-  // var[kDRdPhiL2SeedX]   = dRdPhiL2SeedX;
-  // var[kDPhidPhiL2SeedX] = dPhidPhiL2SeedX;
+    var[kDRdRL1SeedP]     = dRdRL1SeedP;
+    var[kDPhidRL1SeedP]   = dPhidRL1SeedP;
+    // var[kDRdPhiL1SeedX]   = dRdPhiL1SeedX;
+    // var[kDPhidPhiL1SeedX] = dPhidPhiL1SeedX;
+    // var[kDRdRL2SeedP]     = dRdRL2SeedP;
+    // var[kDPhidRL2SeedP]   = dPhidRL2SeedP;
+    // var[kDRdPhiL2SeedX]   = dRdPhiL2SeedX;
+    // var[kDPhidPhiL2SeedX] = dPhidPhiL2SeedX;
 
-  for(int iv=0; iv<kLast; ++iv) {
-    var[iv] = (var[iv] - scale_mean_.at(iv)) / scale_std_.at(iv);
+    for(int iv=0; iv<kLastL1; ++iv) {
+      var[iv] = (var[iv] - scale_mean_.at(iv)) / scale_std_.at(iv);
+    }
+
+    return gbrForest_->GetResponse( var );
   }
+  else{
 
-  return gbrForest_->GetResponse( var );
+    float var[kLastL2]{};
+
+    var[kTsosErr0]   = seed.startingState().error(0);
+    var[kTsosErr2]   = seed.startingState().error(2);
+    var[kTsosErr5]   = seed.startingState().error(5);
+    var[kTsosDxdz]   = seed.startingState().parameters().dxdz();
+    var[kTsosDydz]   = seed.startingState().parameters().dydz();
+    var[kTsosQbp]    = seed.startingState().parameters().qbp();
+
+    float initDRdPhi = 99999.;
+
+    float dRdRL1SeedP = initDRdPhi;
+    float dPhidRL1SeedP = initDRdPhi;
+    float dRdPhiL1SeedX = initDRdPhi;
+    float dPhidPhiL1SeedX = initDRdPhi;
+    getL1MuonVariables( seed, global_p, global_x, h_L1Muon, dRdRL1SeedP, dPhidRL1SeedP, dRdPhiL1SeedX, dPhidPhiL1SeedX );
+
+    float dRdRL2SeedP = initDRdPhi;
+    float dPhidRL2SeedP = initDRdPhi;
+    float dRdPhiL2SeedX = initDRdPhi;
+    float dPhidPhiL2SeedX = initDRdPhi;
+    getL2MuonVariables( seed, global_p, global_x, h_L2Muon, dRdRL2SeedP, dPhidRL2SeedP, dRdPhiL2SeedX, dPhidPhiL2SeedX );
+
+    var[kDRdRL1SeedP]     = dRdRL1SeedP;
+    var[kDPhidRL1SeedP]   = dPhidRL1SeedP;
+    var[kDRdRL2SeedP]     = dRdRL2SeedP;
+    var[kDPhidRL2SeedP]   = dPhidRL2SeedP;
+
+    for(int iv=0; iv<kLastL2; ++iv) {
+      var[iv] = (var[iv] - scale_mean_.at(iv)) / scale_std_.at(iv);
+    }
+
+    return gbrForest_->GetResponse( var );
+  }
 }
