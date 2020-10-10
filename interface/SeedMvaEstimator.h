@@ -36,8 +36,10 @@ public:
     GlobalPoint,
     edm::Handle<l1t::MuonBxCollection>,
     edm::Handle<reco::RecoChargedCandidateCollection>,
-    bool IsFromL1 = false
+    bool IsFromL1
   ) const;
+  
+  int sizeOfscales(){return scale_mean_.size();}
 
 private:
   std::unique_ptr<const GBRForest> gbrForest_;

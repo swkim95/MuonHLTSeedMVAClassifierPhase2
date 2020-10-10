@@ -17,6 +17,7 @@ def customizerFuncForMuonHLTSeeding(
     # -- Seed MVA Classifiers
     process.hltIter2IterL3MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
         rejectAll = cms.bool(False),
+        isFromL1 = cms.bool(False),
 
         src    = cms.InputTag("hltIter2IterL3MuonPixelSeeds", "", newProcessName),
         L1Muon = cms.InputTag("hltGtStage2Digis", "Muon", newProcessName),
@@ -50,6 +51,7 @@ def customizerFuncForMuonHLTSeeding(
 
         # Reject all seeds
         rejectAll = cms.bool(True),
+        isFromL1 = cms.bool(False),
 
         src    = cms.InputTag("hltIter3IterL3MuonPixelSeeds", "", newProcessName),
         L1Muon = cms.InputTag("hltGtStage2Digis", "Muon", newProcessName),
@@ -81,6 +83,7 @@ def customizerFuncForMuonHLTSeeding(
 
     process.hltIter2IterL3FromL1MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
         rejectAll = cms.bool(False),
+        isFromL1 = cms.bool(True),
 
         src    = cms.InputTag("hltIter2IterL3FromL1MuonPixelSeeds", "", newProcessName),
         L1Muon = cms.InputTag("hltGtStage2Digis", "Muon", newProcessName),
@@ -107,14 +110,14 @@ def customizerFuncForMuonHLTSeeding(
         nSeedsMax_E = cms.int32(nSeedsMax_E[5]),
 
         mvaCut_B = cms.double(mvaCuts_B[5]),
-        mvaCut_E = cms.double(mvaCuts_E[5]),
-        isFromL1 = cms.bool(True)
+        mvaCut_E = cms.double(mvaCuts_E[5])
     )
 
     process.hltIter3IterL3FromL1MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
 
         # Reject all seeds
         rejectAll = cms.bool(True),
+        isFromL1 = cms.bool(True),
 
         src    = cms.InputTag("hltIter3IterL3FromL1MuonPixelSeeds", "", newProcessName),
         L1Muon = cms.InputTag("hltGtStage2Digis", "Muon", newProcessName),

@@ -19,28 +19,28 @@ SeedMvaEstimator::~SeedMvaEstimator() {}
 namespace {
   enum inputIndexes {
     kTsosErr0,         // 0
-    kTsosErr1,         // 1                                                                                                                                                                                                                
+    kTsosErr1,         // 1
     kTsosErr2,         // 2
-    kTsosErr3,         // 3                                                                                                                                                                                                                
-    kTsosErr4,         // 4                                                                                                                                                                                                                
+    kTsosErr3,         // 3
+    kTsosErr4,         // 4
     kTsosErr5,         // 5
-    kTsosErr6,         // 6                                                                                                                                                                                                                
-    kTsosErr7,         // 7                                                                                                                                                                                                                
-    kTsosErr8,         // 8                                                                                                                                                                                                                
-    kTsosErr9,         // 9                                                                                                                                                                                                                
-    kTsosErr10,        // 10                                                                                                                                                                                                               
-    kTsosErr11,        // 11                                                                                                                                                                                                               
-    kTsosErr12,        // 12                                                                                                                                                                                                               
-    kTsosErr13,        // 13                                                                                                                                                                                                               
-    kTsosErr14,        // 14                                                                                                                                                                                                               
+    kTsosErr6,         // 6
+    kTsosErr7,         // 7
+    kTsosErr8,         // 8
+    kTsosErr9,         // 9
+    kTsosErr10,        // 10
+    kTsosErr11,        // 11
+    kTsosErr12,        // 12
+    kTsosErr13,        // 13
+    kTsosErr14,        // 14
     kTsosDxdz,         // 15
     kTsosDydz,         // 16
     kTsosQbp,          // 17
-    kTsosCharge,       // 18                                                                                                                                                                                                               
+    kTsosCharge,       // 18
     kDRdRL1SeedP,      // 19
     kDPhidRL1SeedP,    // 20
     kDRdPhiL1SeedX,    // 21
-    kDPhidPhiL1SeedX,  // 22                                                                                                                                                                                                               
+    kDPhidPhiL1SeedX,  // 22
     kDRdRL2SeedP,      // 23
     kDPhidRL2SeedP,    // 24
     kDRdPhiL2SeedX,    // 25

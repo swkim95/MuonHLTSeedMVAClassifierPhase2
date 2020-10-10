@@ -99,7 +99,7 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 		const int nSeedsMax_E_;
 
 		const bool rejectAll_;
-                bool isFromL1 = false;
+                const bool isFromL1;
 
 		std::vector<float> getSeedMva(
 			pairSeedMvaEstimator pairMvaEstimator,
@@ -108,8 +108,8 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 			GlobalPoint  global_x,
 			edm::Handle<l1t::MuonBxCollection>& h_L1Muon,
 			edm::Handle<reco::RecoChargedCandidateCollection>& h_L2Muon,
-			float offset,
-			bool isFromL1 = false
+			bool isFromL1,
+			float offset
 		);
 };
 
@@ -136,7 +136,8 @@ MuonHLTSeedMVAClassifier::MuonHLTSeedMVAClassifier(const edm::ParameterSet& iCon
 	nSeedsMax_B_   (iConfig.getParameter<int>("nSeedsMax_B")),
 	nSeedsMax_E_   (iConfig.getParameter<int>("nSeedsMax_E")),
 
-	rejectAll_     (iConfig.getParameter<bool>("rejectAll"))
+        rejectAll_     (iConfig.getParameter<bool>("rejectAll")),
+	isFromL1     (iConfig.getParameter<bool>("isFromL1"))
 {
 	produces<TrajectorySeedCollection>();
 
@@ -238,6 +239,7 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				global_x,
 				h_L1Muon,
 				h_L2Muon,
+				isFromL1,
 				0.5
 			);
 
@@ -299,6 +301,7 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				global_x,
 				h_L1Muon,
 				h_L2Muon,
+				isFromL1,
 				0.5
 			);
 
@@ -323,8 +326,8 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 	GlobalPoint  global_x,
 	edm::Handle<l1t::MuonBxCollection>& h_L1Muon,
 	edm::Handle<reco::RecoChargedCandidateCollection>& h_L2Muon,
-	float offset = 0.5,
-	bool IsFromL1
+	bool isFromL1,
+	float offset = 0.5
 ) {
 	std::vector<float> v_mva = {};
 
@@ -337,7 +340,7 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 				global_x,
 				h_L1Muon,
 				h_L2Muon,
-				IsFromL1
+				isFromL1
 			);
 			v_mva.push_back( (offset + mva) );
 		}
@@ -348,7 +351,7 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 				global_x,
 				h_L1Muon,
 				h_L2Muon,
-				IsFromL1
+				isFromL1
 			);
 			v_mva.push_back( (offset + mva) );
 		}
