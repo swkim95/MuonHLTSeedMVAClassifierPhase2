@@ -15,6 +15,7 @@ def customizerFuncForMuonHLTSeeding(
     print "\tmvaCuts_E:   ", mvaCuts_E
 
     # -- Seed MVA Classifiers
+    '''
     process.hltIterL3OISeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
         rejectAll = cms.bool(False),
         isFromL1 = cms.bool(False),
@@ -46,7 +47,7 @@ def customizerFuncForMuonHLTSeeding(
         mvaCut_B = cms.double(mvaCuts_B[0]),
         mvaCut_E = cms.double(mvaCuts_E[0])
     )
-
+    '''
     process.hltIter2IterL3MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
         rejectAll = cms.bool(False),
         isFromL1 = cms.bool(False),
@@ -82,7 +83,7 @@ def customizerFuncForMuonHLTSeeding(
     process.hltIter3IterL3MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
 
         # Reject all seeds
-        rejectAll = cms.bool(False),
+        rejectAll = cms.bool(True),
         isFromL1 = cms.bool(False),
 
         src    = cms.InputTag("hltIter3IterL3MuonPixelSeeds", "", newProcessName),
@@ -148,7 +149,7 @@ def customizerFuncForMuonHLTSeeding(
     process.hltIter3IterL3FromL1MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
 
         # Reject all seeds
-        rejectAll = cms.bool(False),
+        rejectAll = cms.bool(True),
         isFromL1 = cms.bool(True),
 
         src    = cms.InputTag("hltIter3IterL3FromL1MuonPixelSeeds", "", newProcessName),
@@ -180,13 +181,14 @@ def customizerFuncForMuonHLTSeeding(
     )
 
     # -- Track Candidates
-    process.hltIterL3OITrackCandidates.src = cms.InputTag("hltIterL3OISeedsFiltered", "", newProcessName)
+    # process.hltIterL3OITrackCandidates.src = cms.InputTag("hltIterL3OISeedsFiltered", "", newProcessName)
     process.hltIter2IterL3MuonCkfTrackCandidates.src       = cms.InputTag("hltIter2IterL3MuonPixelSeedsFiltered", "", newProcessName)
     process.hltIter3IterL3MuonCkfTrackCandidates.src       = cms.InputTag("hltIter3IterL3MuonPixelSeedsFiltered", "", newProcessName)
     process.hltIter2IterL3FromL1MuonCkfTrackCandidates.src = cms.InputTag("hltIter2IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
     process.hltIter3IterL3FromL1MuonCkfTrackCandidates.src = cms.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
 
     # -- Sequences
+    '''
     process.HLTIterL3OImuonTkCandidateSequence = cms.Sequence(
         process.hltIterL3OISeedsFromL2Muons+
         process.hltIterL3OISeedsFiltered+  # HERE
@@ -196,6 +198,7 @@ def customizerFuncForMuonHLTSeeding(
         process.hltIterL3OIMuonTrackSelectionHighPurity+
         process.hltL3MuonsIterL3OI
     )
+    '''
 
     process.HLTIterativeTrackingIteration2ForIterL3Muon = cms.Sequence(
         process.hltIter2IterL3MuonClustersRefRemoval+
@@ -272,17 +275,17 @@ def customizerFuncForMuonHLTSeeding(
         process.writeDataset.fileName = cms.untracked.string("edmOutput_%s_%s.root" % (version, WPName) )
 
     if hasattr(process, "ntupler"):
-        process.ntupler.hltIterL3OISeedsFromL2Muons        = cms.untracked.InputTag("hltIterL3OISeedsFiltered",                   "", newProcessName)             
+        # process.ntupler.hltIterL3OISeedsFromL2Muons        = cms.untracked.InputTag("hltIterL3OISeedsFiltered",                   "", newProcessName)
         process.ntupler.hltIter2IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter2IterL3MuonPixelSeedsFiltered",       "", newProcessName)
-        process.ntupler.hltIter3IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter3IterL3MuonPixelSeedsFiltered",       "", newProcessName)
+        # process.ntupler.hltIter3IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter3IterL3MuonPixelSeedsFiltered",       "", newProcessName)
         process.ntupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter2IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
-        process.ntupler.hltIter3IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
+        # process.ntupler.hltIter3IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
 
     if hasattr(process, "seedNtupler"):
-        process.seedNtupler.hltIterL3OISeedsFromL2Muons        = cms.untracked.InputTag("hltIterL3OISeedsFiltered",                   "", newProcessName)
+        # process.seedNtupler.hltIterL3OISeedsFromL2Muons        = cms.untracked.InputTag("hltIterL3OISeedsFiltered",                   "", newProcessName)
         process.seedNtupler.hltIter2IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter2IterL3MuonPixelSeedsFiltered",       "", newProcessName)
-        process.seedNtupler.hltIter3IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter3IterL3MuonPixelSeedsFiltered",       "", newProcessName)
+        # process.seedNtupler.hltIter3IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter3IterL3MuonPixelSeedsFiltered",       "", newProcessName)
         process.seedNtupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter2IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
-        process.seedNtupler.hltIter3IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
+        # process.seedNtupler.hltIter3IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
 
     return process
