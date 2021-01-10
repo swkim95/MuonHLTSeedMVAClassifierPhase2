@@ -79,7 +79,7 @@ def customizerFuncForMuonHLTSeeding(
         mvaCut_B = cms.double(mvaCuts_B[2]),
         mvaCut_E = cms.double(mvaCuts_E[2])
     )
-
+    '''
     process.hltIter3IterL3MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
 
         # Reject all seeds
@@ -113,7 +113,7 @@ def customizerFuncForMuonHLTSeeding(
         mvaCut_B = cms.double(mvaCuts_B[3]),
         mvaCut_E = cms.double(mvaCuts_E[3])
     )
-
+    '''
     process.hltIter2IterL3FromL1MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
         rejectAll = cms.bool(False),
         isFromL1 = cms.bool(True),
@@ -145,7 +145,7 @@ def customizerFuncForMuonHLTSeeding(
         mvaCut_B = cms.double(mvaCuts_B[5]),
         mvaCut_E = cms.double(mvaCuts_E[5])
     )
-
+    '''
     process.hltIter3IterL3FromL1MuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
 
         # Reject all seeds
@@ -179,13 +179,13 @@ def customizerFuncForMuonHLTSeeding(
         mvaCut_B = cms.double(mvaCuts_B[6]),
         mvaCut_E = cms.double(mvaCuts_E[6])
     )
-
+    '''
     # -- Track Candidates
     # process.hltIterL3OITrackCandidates.src = cms.InputTag("hltIterL3OISeedsFiltered", "", newProcessName)
     process.hltIter2IterL3MuonCkfTrackCandidates.src       = cms.InputTag("hltIter2IterL3MuonPixelSeedsFiltered", "", newProcessName)
-    process.hltIter3IterL3MuonCkfTrackCandidates.src       = cms.InputTag("hltIter3IterL3MuonPixelSeedsFiltered", "", newProcessName)
+    #process.hltIter3IterL3MuonCkfTrackCandidates.src       = cms.InputTag("hltIter3IterL3MuonPixelSeedsFiltered", "", newProcessName)
     process.hltIter2IterL3FromL1MuonCkfTrackCandidates.src = cms.InputTag("hltIter2IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
-    process.hltIter3IterL3FromL1MuonCkfTrackCandidates.src = cms.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
+    #process.hltIter3IterL3FromL1MuonCkfTrackCandidates.src = cms.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
 
     # -- Sequences
     '''
@@ -214,7 +214,7 @@ def customizerFuncForMuonHLTSeeding(
         process.hltIter2IterL3MuonTrackCutClassifier+
         process.hltIter2IterL3MuonTrackSelectionHighPurity
     )
-
+    '''
     process.HLTIterativeTrackingIteration3ForIterL3Muon = cms.Sequence(
         process.hltIter3IterL3MuonClustersRefRemoval+
         process.hltIter3IterL3MuonMaskedMeasurementTrackerEvent+
@@ -230,7 +230,7 @@ def customizerFuncForMuonHLTSeeding(
         process.hltIter3IterL3MuonTrackCutClassifier+
         process.hltIter3IterL3MuonTrackSelectionHighPurity
     )
-
+    '''
     process.HLTIterativeTrackingIteration2ForIterL3FromL1Muon = cms.Sequence(
         process.hltIter2IterL3FromL1MuonClustersRefRemoval+
         process.hltIter2IterL3FromL1MuonMaskedMeasurementTrackerEvent+
@@ -245,7 +245,7 @@ def customizerFuncForMuonHLTSeeding(
         process.hltIter2IterL3FromL1MuonTrackCutClassifier+
         process.hltIter2IterL3FromL1MuonTrackSelectionHighPurity
     )
-
+    '''
     process.HLTIterativeTrackingIteration3ForIterL3FromL1Muon = cms.Sequence(
         process.hltIter3IterL3FromL1MuonClustersRefRemoval+
         process.hltIter3IterL3FromL1MuonMaskedMeasurementTrackerEvent+
@@ -260,7 +260,7 @@ def customizerFuncForMuonHLTSeeding(
         process.hltIter3IterL3FromL1MuonTrackCutClassifier+
         process.hltIter3IterL3FromL1MuonTrackSelectionHighPurity
     )
-
+    '''
     # -- DQMOutput and Ntupler
     # if hasattr(process, "DQMOutput"):
     #     del process.DQMOutput
