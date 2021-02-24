@@ -77,14 +77,8 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 		typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
 		pairSeedMvaEstimator mvaEstimator;
 
-		edm::FileInPath mvaFile_B_0_;
-		edm::FileInPath mvaFile_B_1_;
-		edm::FileInPath mvaFile_B_2_;
-		edm::FileInPath mvaFile_B_3_;
-		edm::FileInPath mvaFile_E_0_;
-		edm::FileInPath mvaFile_E_1_;
-		edm::FileInPath mvaFile_E_2_;
-		edm::FileInPath mvaFile_E_3_;
+		edm::FileInPath mvaFile_B_;
+		edm::FileInPath mvaFile_E_;
 
 		std::vector<double> mvaScaleMean_B_;
 		std::vector<double> mvaScaleStd_B_;
@@ -101,7 +95,7 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 		const bool rejectAll_;
                 const bool isFromL1;
 
-		std::vector<float> getSeedMva(
+		float getSeedMva(
 			pairSeedMvaEstimator pairMvaEstimator,
 			const TrajectorySeed& seed,
 			GlobalVector global_p,
@@ -142,14 +136,8 @@ MuonHLTSeedMVAClassifier::MuonHLTSeedMVAClassifier(const edm::ParameterSet& iCon
 	produces<TrajectorySeedCollection>();
 
 	if(!rejectAll_) {
-		mvaFile_B_0_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B_0");
-		mvaFile_B_1_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B_1");
-		mvaFile_B_2_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B_2");
-		mvaFile_B_3_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B_3");
-		mvaFile_E_0_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E_0");
-		mvaFile_E_1_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E_1");
-		mvaFile_E_2_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E_2");
-		mvaFile_E_3_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E_3");
+		mvaFile_B_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_B");
+		mvaFile_E_   = iConfig.getUntrackedParameter<edm::FileInPath>("mvaFile_E");
 
 		mvaScaleMean_B_= iConfig.getUntrackedParameter<std::vector<double>>("mvaScaleMean_B");
 		mvaScaleStd_B_ = iConfig.getUntrackedParameter<std::vector<double>>("mvaScaleStd_B");
@@ -157,14 +145,8 @@ MuonHLTSeedMVAClassifier::MuonHLTSeedMVAClassifier(const edm::ParameterSet& iCon
 		mvaScaleStd_E_ = iConfig.getUntrackedParameter<std::vector<double>>("mvaScaleStd_E");
 
 		mvaEstimator = {
-			make_pair( new SeedMvaEstimator(mvaFile_B_0_, mvaScaleMean_B_, mvaScaleStd_B_),
-			           new SeedMvaEstimator(mvaFile_E_0_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-			make_pair( new SeedMvaEstimator(mvaFile_B_1_, mvaScaleMean_B_, mvaScaleStd_B_),
-			           new SeedMvaEstimator(mvaFile_E_1_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-			make_pair( new SeedMvaEstimator(mvaFile_B_2_, mvaScaleMean_B_, mvaScaleStd_B_),
-			           new SeedMvaEstimator(mvaFile_E_2_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-			make_pair( new SeedMvaEstimator(mvaFile_B_3_, mvaScaleMean_B_, mvaScaleStd_B_),
-			           new SeedMvaEstimator(mvaFile_E_3_, mvaScaleMean_E_, mvaScaleStd_E_) )
+			make_pair( new SeedMvaEstimator(mvaFile_B_, mvaScaleMean_B_, mvaScaleStd_B_),
+			           new SeedMvaEstimator(mvaFile_E_, mvaScaleMean_E_, mvaScaleStd_E_) )
 		};
 	}
 }
@@ -222,6 +204,14 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 			// FIXME this should be configurable
 			bool isB = ( std::abs( global_p.eta() ) < 1.2 );
 
+			if( isB && nSeedsMax_B_ == 0 ) {
+				continue;
+			}
+
+			if( !isB && nSeedsMax_E_ == 0 ) {
+				continue;
+			}
+
 			if( isB && nSeedsMax_B_ < 0 ) {
 				result->emplace_back( seed );
 				continue;
@@ -232,7 +222,7 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				continue;
 			}
 
-			std::vector<float> mvas = getSeedMva(
+			float mva = getSeedMva(
 				mvaEstimator,
 				seed,
 				global_p,
@@ -243,10 +233,11 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				0.5
 			);
 
-			float softmax = std::exp(mvas.at(3)) / ( std::exp(mvas.at(0)) + std::exp(mvas.at(1)) + std::exp(mvas.at(2)) + std::exp(mvas.at(3)) );
+			//float softmax = std::exp(mvas.at(3)) / ( std::exp(mvas.at(0)) + std::exp(mvas.at(1)) + std::exp(mvas.at(2)) + std::exp(mvas.at(3)) );
+			float score = 1. / ( 1. + std::exp(-1. * mva));
 
-			if(isB)  pairSeedIdxMvaScore_B.push_back( make_pair( i, softmax ) );
-			else     pairSeedIdxMvaScore_E.push_back( make_pair( i, softmax ) );
+			if(isB)  pairSeedIdxMvaScore_B.push_back( make_pair( i, score ) );
+			else     pairSeedIdxMvaScore_E.push_back( make_pair( i, score ) );
 		}
 
 		std::sort(pairSeedIdxMvaScore_B.begin(), pairSeedIdxMvaScore_B.end(), sortByMvaScore );
@@ -294,7 +285,7 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				continue;
 			}
 
-			std::vector<float> mvas = getSeedMva(
+			float mva = getSeedMva(
 				mvaEstimator,
 				seed,
 				global_p,
@@ -305,11 +296,12 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				0.5
 			);
 
-			float softmax = std::exp(mvas.at(3)) / ( std::exp(mvas.at(0)) + std::exp(mvas.at(1)) + std::exp(mvas.at(2)) + std::exp(mvas.at(3)) );
+			//float softmax = std::exp(mvas.at(3)) / ( std::exp(mvas.at(0)) + std::exp(mvas.at(1)) + std::exp(mvas.at(2)) + std::exp(mvas.at(3)) );
+                        float score = 1. / ( 1. + std::exp(-1. * mva));
 
 			bool passMva = (
-				(  isB && (softmax > mvaCut_B_) ) ||
-				( !isB && (softmax > mvaCut_E_) )
+				(  isB && (score > mvaCut_B_) ) ||
+				( !isB && (score > mvaCut_E_) )
 			);
 
 			if( passMva )  result->emplace_back( seed );
@@ -319,7 +311,7 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 	iEvent.put(std::move(result));
 }
 
-std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
+float MuonHLTSeedMVAClassifier::getSeedMva(
 	pairSeedMvaEstimator pairMvaEstimator,
 	const TrajectorySeed& seed,
 	GlobalVector global_p,
@@ -329,12 +321,12 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 	bool isFromL1,
 	float offset = 0.5
 ) {
-	std::vector<float> v_mva = {};
+	float mva = 0.;
 
 	for(auto ic=0U; ic<pairMvaEstimator.size(); ++ic) {
 		// FIXME this should be configurable
 		if( fabs( global_p.eta() ) < 1.2 ) {
-			float mva = pairMvaEstimator.at(ic).first->computeMva(
+			mva = pairMvaEstimator.at(ic).first->computeMva(
 				seed,
 				global_p,
 				global_x,
@@ -342,10 +334,9 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 				h_L2Muon,
 				isFromL1
 			);
-			v_mva.push_back( (offset + mva) );
 		}
 		else {
-			float mva = pairMvaEstimator.at(ic).second->computeMva(
+			mva = pairMvaEstimator.at(ic).second->computeMva(
 				seed,
 				global_p,
 				global_x,
@@ -353,21 +344,16 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 				h_L2Muon,
 				isFromL1
 			);
-			v_mva.push_back( (offset + mva) );
 		}
 	}
-	if( v_mva.size() != 4 ) {  // this should never happen
-		std::cout << "MuonHLTSeedMVAClassifier::getSeedMva: v_mva.size() != 4" << std::endl;
-		return { -99999., -99999., -99999., -99999. };
-	}
-
-	return v_mva;
+	if(pairMvaEstimator.size() > 1) std::cout << "MuonHLTSeedMVAClassifier::getSeedMva : Something Wrong!! pairMvaEstimator.size()>1" << std::endl;
+	return (mva + offset);
 }
 
 void MuonHLTSeedMVAClassifier::beginJob(){}
 
 void MuonHLTSeedMVAClassifier::endJob(){
-	for( int i=0; i<4; ++i ) {
+	for( int i=0; i<1; ++i ) {
 		delete mvaEstimator.at(i).first;
 		delete mvaEstimator.at(i).second;
 	}
