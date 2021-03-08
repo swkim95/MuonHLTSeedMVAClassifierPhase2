@@ -207,7 +207,6 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 			if( isB && nSeedsMax_B_ == 0 ) {
 				continue;
 			}
-
 			if( !isB && nSeedsMax_E_ == 0 ) {
 				continue;
 			}
@@ -216,7 +215,6 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				result->emplace_back( seed );
 				continue;
 			}
-
 			if( !isB && nSeedsMax_E_ < 0 ) {
 				result->emplace_back( seed );
 				continue;
@@ -233,7 +231,6 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				0.5
 			);
 
-			//float softmax = std::exp(mvas.at(3)) / ( std::exp(mvas.at(0)) + std::exp(mvas.at(1)) + std::exp(mvas.at(2)) + std::exp(mvas.at(3)) );
 			float score = 1. / ( 1. + std::exp(-1. * mva));
 
 			if(isB)  pairSeedIdxMvaScore_B.push_back( make_pair( i, score ) );
@@ -270,7 +267,6 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 			if( isB && mvaCut_B_ > 1.0 ) {
 				continue;
 			}
-
 			if( !isB && mvaCut_E_ > 1.0 ) {
 				continue;
 			}
@@ -279,7 +275,6 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				result->emplace_back( seed );
 				continue;
 			}
-
 			if( !isB && mvaCut_E_ <= 0. ) {
 				result->emplace_back( seed );
 				continue;
@@ -296,7 +291,6 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				0.5
 			);
 
-			//float softmax = std::exp(mvas.at(3)) / ( std::exp(mvas.at(0)) + std::exp(mvas.at(1)) + std::exp(mvas.at(2)) + std::exp(mvas.at(3)) );
                         float score = 1. / ( 1. + std::exp(-1. * mva));
 
 			bool passMva = (
