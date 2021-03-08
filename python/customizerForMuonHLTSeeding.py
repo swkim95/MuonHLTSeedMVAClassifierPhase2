@@ -249,10 +249,6 @@ def customizerFuncForMuonHLTSeeding(
         process.hltIter3IterL3FromL1MuonTrackSelectionHighPurity
     )
 
-    # -- DQMOutput and Ntupler
-    # if hasattr(process, "DQMOutput"):
-    #     del process.DQMOutput
-
     if hasattr(process, "dqmOutput"):
         process.dqmOutput.fileName = cms.untracked.string("DQMIO_%s_%s.root" % (version, WPName) )
 
@@ -261,19 +257,5 @@ def customizerFuncForMuonHLTSeeding(
 
     if hasattr(process, "writeDataset"):
         process.writeDataset.fileName = cms.untracked.string("edmOutput_%s_%s.root" % (version, WPName) )
-
-    if hasattr(process, "ntupler"):
-        # process.ntupler.hltIterL3OISeedsFromL2Muons        = cms.untracked.InputTag("hltIterL3OISeedsFiltered",                   "", newProcessName)
-        process.ntupler.hltIter2IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter2IterL3MuonPixelSeedsFiltered",       "", newProcessName)
-        # process.ntupler.hltIter3IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter3IterL3MuonPixelSeedsFiltered",       "", newProcessName)
-        process.ntupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter2IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
-        # process.ntupler.hltIter3IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
-
-    if hasattr(process, "seedNtupler"):
-        # process.seedNtupler.hltIterL3OISeedsFromL2Muons        = cms.untracked.InputTag("hltIterL3OISeedsFiltered",                   "", newProcessName)
-        process.seedNtupler.hltIter2IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter2IterL3MuonPixelSeedsFiltered",       "", newProcessName)
-        # process.seedNtupler.hltIter3IterL3MuonPixelSeeds       = cms.untracked.InputTag("hltIter3IterL3MuonPixelSeedsFiltered",       "", newProcessName)
-        process.seedNtupler.hltIter2IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter2IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
-        # process.seedNtupler.hltIter3IterL3FromL1MuonPixelSeeds = cms.untracked.InputTag("hltIter3IterL3FromL1MuonPixelSeedsFiltered", "", newProcessName)
 
     return process

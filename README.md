@@ -23,9 +23,6 @@ hltGetConfiguration /dev/CMSSW_11_0_0/GRun --globaltag 110X_mcRun3_2021_realisti
 ```
 
  * Revise menu
-```shell
-numberOfThreads = cms.untracked.uint32( 4 ), ->  numberOfThreads = cms.untracked.uint32( 1 ),
-```
  * Add these part in the last part of menu
 ```shell
 # -- Seer Classifier -- #                                                                            
@@ -41,7 +38,7 @@ process = customizerFuncForMuonHLTSeeding(process, "MYHLT", "Run3v6", "WP0p00", 
 
  * Change by Working points
 If you want to sort seeds by their scores
-ex) limit the number of seeds at maximum 5 in Iter2, Iter2FromL1 Sequences
+ - ex) limit the number of seeds at maximum 5 in Iter2, Iter2FromL1 Sequences
 ```shell
 doSort = True
 nSeedMax_B = ( -1, -1, 5, 0, -1, 5, 0 )
@@ -50,7 +47,7 @@ process = customizerFuncForMuonHLTSeeding(process, "MYHLT", "Run3v6", "N5", doSo
 ```
 
 If you want to reject seeds by score threshold
-ex) limit the scores of seeds at minimum 0.04 in Iter2, Iter2FromL1 Sequences
+ - ex) limit the scores of seeds at minimum 0.04 in Iter2, Iter2FromL1 Sequences
 ```shell
 doSort = False
 mvaCuts_B = ( 0., 0., 0.04, 1e9, 0., 0.04, 1e9 )
