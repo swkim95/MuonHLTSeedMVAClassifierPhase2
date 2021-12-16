@@ -20,6 +20,22 @@
 #include <memory>
 #include <string>
 
+// For Phase 2 variables
+// -- for L1TkMu propagation
+#include "TrackingTools/GeomPropagators/interface/Propagator.h"
+#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
+#include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
+#include "RecoTracker/TkDetLayers/interface/GeometricSearchTracker.h"
+#include "RecoTracker/TkDetLayers/interface/GeometricSearchTrackerBuilder.h"
+#include "Geometry/TrackerNumberingBuilder/interface/GeometricDet.h"
+#include "Geometry/Records/interface/IdealGeometryRecord.h"
+#include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
+#include "Geometry/Records/interface/TrackerTopologyRcd.h"
+
+
+typedef pair<const DetLayer*, TrajectoryStateOnSurface> LayerTSOS;
+typedef pair<const DetLayer*, const TrackingRecHit*> LayerHit;
+
 class GBRForest;
 
 namespace edm {
@@ -48,5 +64,47 @@ private:
   // void getL1MuonVariables( const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::MuonBxCollection>, float&, float&, float&, float& ) const;
   void getL2MuonVariables( const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<reco::RecoChargedCandidateCollection>, float&, float&, float&, float& ) const;
   void getL1TTVariables(   const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::TkMuonCollection>, float&, float& ) const;
+};
+
+
+
+// Phase 2 SeedMvaEstimator
+class SeedMvaEstimatorPhase2 {
+public:
+  SeedMvaEstimatorPhase2( const edm::FileInPath& weightsfile, std::vector<double> scale_mean, std::vector<double> scale_std );
+  ~SeedMvaEstimatorPhase2();
+
+  float computeMva( const TrajectorySeed&,
+    GlobalVector,
+    GlobalPoint,
+    edm::Handle<l1t::TkMuonCollection>,
+    edm::ESHandle<MagneticField>&,
+    const Propagator&,
+    GeometricSearchTracker*
+  ) const;
+
+private:
+  std::unique_ptr<const GBRForest> gbrForest_;
+
+  std::vector<double> scale_mean_;
+  std::vector<double> scale_std_;
+
+  vector< LayerTSOS > getTsosOnPixels(
+    TTTrack<Ref_Phase2TrackerDigi_>,
+    edm::ESHandle<MagneticField>&,
+    const Propagator&,
+    GeometricSearchTracker*
+  ) const;
+
+  vector< pair<LayerHit, LayerTSOS> > getHitTsosPairs(
+    const TrajectorySeed&,
+    edm::Handle<l1t::TkMuonCollection>,
+    edm::ESHandle<MagneticField>&,
+    const Propagator&,
+    GeometricSearchTracker*
+  ) const;
+
+  void getL1TTVariables(   const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::TkMuonCollection>, float&, float& ) const;
+  void getHitL1TkVatiables( const TrajectorySeed&, edm::Handle<l1t::TkMuonCollection>, edm::ESHandle<MagneticField>&, const Propagator&, GeometricSearchTracker*, float&, float&, float&) const;
 };
 #endif

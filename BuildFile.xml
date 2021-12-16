@@ -34,6 +34,11 @@
 <use name="TrackingTools/TrackAssociator"/>
 <use name="CommonTools/MVAUtils"/>
 <use name="DataFormats/TrajectorySeed"/>
+<use name="TrackingTools/GeomPropagators"/>
+<use name="RecoTracker/TkDetLayers"/>
+<use name="Geometry/TrackerNumberingBuilder"/>
+<use name="DataFormats/TrackerCommon"/>
+
 <!-- <flags EDM_PLUGIN="1"/> -->
 <export>
   <lib name="1"/>
