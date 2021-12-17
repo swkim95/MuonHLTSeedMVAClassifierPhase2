@@ -524,7 +524,7 @@ float SeedMvaEstimatorPhase2::computeMva( const TrajectorySeed& seed,
   float expd2HitL1Tk1 = initDRdPhi;
   float expd2HitL1Tk2 = initDRdPhi;
   float expd2HitL1Tk3 = initDRdPhi;
-  getHitL1TkVatiables( seed, h_L1TkMu, magfieldH, propagatorAlong, geomTracker, expd2HitL1Tk1, expd2HitL1Tk2, expd2HitL1Tk3);
+  getHitL1TkVatiables( seed, h_L1TkMu, magfieldH, propagatorAlong, geomTracker, expd2HitL1Tk1, expd2HitL1Tk2, expd2HitL1Tk3 );
   Phase2var[Phase2::kExpd2HitL1Tk1]   = expd2HitL1Tk1;
   Phase2var[Phase2::kExpd2HitL1Tk2]   = expd2HitL1Tk2;
   Phase2var[Phase2::kExpd2HitL1Tk3]   = expd2HitL1Tk3;
@@ -533,5 +533,10 @@ float SeedMvaEstimatorPhase2::computeMva( const TrajectorySeed& seed,
     Phase2var[iv] = (Phase2var[iv] - scale_mean_.at(iv)) / scale_std_.at(iv);
   }
 
-  return gbrForest_->GetResponse( Phase2var );
+  if (expd2HitL1Tk1 != 99999.) {
+    return gbrForest_->GetResponse( Phase2var );
+  }
+  else{
+    return -99999.;
+  }
 }
