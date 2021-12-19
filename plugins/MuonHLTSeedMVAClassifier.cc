@@ -197,6 +197,15 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 	edm::ESHandle<TrackerGeometry> trkGeom;
 	iSetup.get<TrackerDigiGeometryRecord>().get(trkGeom);
 
+	edm::ESHandle<GeometricDet> geomDet;
+	iSetup.get<IdealGeometryRecord>().get(geomDet);
+
+	edm::ESHandle<TrackerTopology> trkTopo;
+	iSetup.get<TrackerTopologyRcd>().get(trkTopo);
+
+	GeometricSearchTrackerBuilder builder;
+	GeometricSearchTracker* geomTracker = builder.build(&(*geomDet), &(*trkgeom), &(*trkTopo));
+
 	// edm::Handle<l1t::MuonBxCollection> h_L1Muon;
 	// bool hasL1 = iEvent.getByToken( t_L1Muon_, h_L1Muon);
 
@@ -208,6 +217,13 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 
 	edm::Handle< TrajectorySeedCollection > h_Seed;
 	bool hasSeed = iEvent.getByToken( t_Seed_, h_Seed );
+
+	edm::ESHandle<MagneticField> magfieldH;
+	iSetup.get<IdealMagneticFieldRecord>().get(magfieldH);
+
+	edm::ESHandle<Propagator> propagatorAlongH;
+	iSetup.get<TrackingComponentsRecord>().get("PropagatorWithMaterialParabolicMf", propagatorAlongH);
+	std::unique_ptr<Propagator> propagatorAlong = SetPropagationDirection(*propagatorAlongH, alongMomentum);
 
 	// if( !( hasL1 && hasL1TkMu && hasL2 && hasSeed ) ) {
 	if( !( hasL1TkMu && hasL2 && hasSeed ) ) {
@@ -244,9 +260,10 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				seed,
 				global_p,
 				global_x,
-				// h_L1Muon,
 				h_L1TkMu,
-				h_L2Muon,
+				magfieldH,
+				*(propagatorAlong.get()),
+				geomTracker,
 				0.5
 			);
 
@@ -300,9 +317,10 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 				seed,
 				global_p,
 				global_x,
-				// h_L1Muon,
 				h_L1TkMu,
-				h_L2Muon,
+				magfieldH,
+				*(propagatorAlong.get()),
+				geomTracker,
 				0.5
 			);
 
