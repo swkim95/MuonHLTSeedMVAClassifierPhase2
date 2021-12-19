@@ -88,7 +88,7 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 		edm::EDGetTokenT<l1t::TkMuonCollection>                t_L1TkMu_;
 		edm::EDGetTokenT<reco::RecoChargedCandidateCollection> t_L2Muon_;
 
-		typedef std::vector< std::pair<SeedMvaEstimator*, SeedMvaEstimator*> > pairSeedMvaEstimator;
+		typedef std::vector< std::pair<SeedMvaEstimatorPhase2*, SeedMvaEstimatorPhase2*> > pairSeedMvaEstimator;
 		pairSeedMvaEstimator mvaEstimator;
 
 		edm::FileInPath mvaFile_B_0_;
@@ -166,14 +166,14 @@ MuonHLTSeedMVAClassifier::MuonHLTSeedMVAClassifier(const edm::ParameterSet& iCon
 	produces<TrajectorySeedCollection>();
 
 	mvaEstimator = {
-		make_pair( new SeedMvaEstimator(mvaFile_B_0_, mvaScaleMean_B_, mvaScaleStd_B_),
-		           new SeedMvaEstimator(mvaFile_E_0_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-		make_pair( new SeedMvaEstimator(mvaFile_B_1_, mvaScaleMean_B_, mvaScaleStd_B_),
-		           new SeedMvaEstimator(mvaFile_E_1_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-		make_pair( new SeedMvaEstimator(mvaFile_B_2_, mvaScaleMean_B_, mvaScaleStd_B_),
-		           new SeedMvaEstimator(mvaFile_E_2_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-		make_pair( new SeedMvaEstimator(mvaFile_B_3_, mvaScaleMean_B_, mvaScaleStd_B_),
-		           new SeedMvaEstimator(mvaFile_E_3_, mvaScaleMean_E_, mvaScaleStd_E_) )
+		make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_0_, mvaScaleMean_B_, mvaScaleStd_B_),
+		           new SeedMvaEstimatorPhase2(mvaFile_E_0_, mvaScaleMean_E_, mvaScaleStd_E_) ),
+		make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_1_, mvaScaleMean_B_, mvaScaleStd_B_),
+		           new SeedMvaEstimatorPhase2(mvaFile_E_1_, mvaScaleMean_E_, mvaScaleStd_E_) ),
+		make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_2_, mvaScaleMean_B_, mvaScaleStd_B_),
+		           new SeedMvaEstimatorPhase2(mvaFile_E_2_, mvaScaleMean_E_, mvaScaleStd_E_) ),
+		make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_3_, mvaScaleMean_B_, mvaScaleStd_B_),
+		           new SeedMvaEstimatorPhase2(mvaFile_E_3_, mvaScaleMean_E_, mvaScaleStd_E_) )
 	};
 }
 
@@ -204,7 +204,7 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 	iSetup.get<TrackerTopologyRcd>().get(trkTopo);
 
 	GeometricSearchTrackerBuilder builder;
-	GeometricSearchTracker* geomTracker = builder.build(&(*geomDet), &(*trkgeom), &(*trkTopo));
+	GeometricSearchTracker* geomTracker = builder.build(&(*geomDet), &(*trkGeom), &(*trkTopo));
 
 	// edm::Handle<l1t::MuonBxCollection> h_L1Muon;
 	// bool hasL1 = iEvent.getByToken( t_L1Muon_, h_L1Muon);
