@@ -40,7 +40,20 @@
 #include "DataFormats/TrajectoryState/interface/LocalTrajectoryParameters.h"
 #include "DataFormats/TrackingRecHit/interface/TrackingRecHit.h"
 
-#include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
+#include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator2.h"
+
+
+// For Phase 2 variables
+// -- for L1TkMu propagation
+#include "TrackingTools/GeomPropagators/interface/Propagator.h"
+#include "TrackingTools/Records/interface/TrackingComponentsRecord.h"
+#include "TrackingTools/TrajectoryState/interface/FreeTrajectoryState.h"
+#include "RecoTracker/TkDetLayers/interface/GeometricSearchTracker.h"
+#include "RecoTracker/TkDetLayers/interface/GeometricSearchTrackerBuilder.h"
+#include "Geometry/TrackerNumberingBuilder/interface/GeometricDet.h"
+#include "Geometry/Records/interface/IdealGeometryRecord.h"
+#include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
+#include "Geometry/Records/interface/TrackerTopologyRcd.h"
 
 //
 // class declaration
@@ -104,9 +117,10 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 			const TrajectorySeed& seed,
 			GlobalVector global_p,
 			GlobalPoint  global_x,
-			// edm::Handle<l1t::MuonBxCollection>& h_L1Muon,
 			edm::Handle<l1t::TkMuonCollection>& h_L1TkMu,
-			edm::Handle<reco::RecoChargedCandidateCollection>& h_L2Muon,
+			edm::ESHandle<MagneticField>& magfieldH,
+			const Propagator& propagatorAlong,
+			GeometricSearchTracker* geomTracker,
 			float offset
 		);
 };
@@ -311,9 +325,10 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 	const TrajectorySeed& seed,
 	GlobalVector global_p,
 	GlobalPoint  global_x,
-	// edm::Handle<l1t::MuonBxCollection>& h_L1Muon,
 	edm::Handle<l1t::TkMuonCollection>& h_L1TkMu,
-	edm::Handle<reco::RecoChargedCandidateCollection>& h_L2Muon,
+	edm::ESHandle<MagneticField>& magfieldH,
+	const Propagator& propagatorAlong,
+	GeometricSearchTracker* geomTracker,
 	float offset = 0.5
 ) {
 	std::vector<float> v_mva = {};
@@ -325,9 +340,10 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 				seed,
 				global_p,
 				global_x,
-				// h_L1Muon,
-				h_L2Muon,
-				h_L1TkMu
+				h_L1TkMu,
+				magfieldH,
+				propagatorAlong,
+				geomTracker
 			);
 			v_mva.push_back( (offset + mva) );
 		}
@@ -336,9 +352,10 @@ std::vector<float> MuonHLTSeedMVAClassifier::getSeedMva(
 				seed,
 				global_p,
 				global_x,
-				// h_L1Muon,
-				h_L2Muon,
-				h_L1TkMu
+				h_L1TkMu,
+				magfieldH,
+				propagatorAlong,
+				geomTracker
 			);
 			v_mva.push_back( (offset + mva) );
 		}
