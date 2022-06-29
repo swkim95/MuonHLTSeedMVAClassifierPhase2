@@ -7,11 +7,11 @@ def customizerFuncForMuonHLTSeeding(
     doSort = False, nSeedsMax_B = (-1), nSeedsMax_E = (-1),
     mvaCuts_B = (0), mvaCuts_E = (0) ):
 
-    print "doSort: ", doSort
-    print "nSeedsMax_B: ", nSeedsMax_B
-    print "nSeedsMax_E: ", nSeedsMax_E
-    print "mvaCuts_B: ", mvaCuts_B
-    print "mvaCuts_E: ", mvaCuts_E
+    print("doSort: ", doSort)
+    print("nSeedsMax_B: ", nSeedsMax_B)
+    print("nSeedsMax_E: ", nSeedsMax_E)
+    print("mvaCuts_B: ", mvaCuts_B)
+    print("mvaCuts_E: ", mvaCuts_E)
 
     # -- Seed MVA Classifiers
     process.hltIter2Phase2L3FromL1TkMuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
