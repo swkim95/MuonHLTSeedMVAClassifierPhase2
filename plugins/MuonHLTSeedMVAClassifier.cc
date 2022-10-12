@@ -55,6 +55,11 @@
 #include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
 #include "Geometry/Records/interface/TrackerTopologyRcd.h"
 
+// ------ For CMSSW_12 ------
+#include "FWCore/Utilities/interface/ESGetToken.h"
+#include "FWCore/Utilities/interface/ESInputTag.h"
+// ---------------------------
+
 //
 // class declaration
 //
@@ -112,6 +117,14 @@ class MuonHLTSeedMVAClassifier : public edm::stream::EDProducer<> {
 		const int nSeedsMax_B_;
 		const int nSeedsMax_E_;
 
+		  // ------ For CMSSW_12 -------
+		const edm::ESGetToken<TrackerTopology, TrackerTopologyRcd> trackerTopologyESToken_;
+		const edm::ESGetToken<TrackerGeometry, TrackerDigiGeometryRecord> trackerGeometryESToken_;
+		const edm::ESGetToken<MagneticField, IdealMagneticFieldRecord> magFieldESToken_;
+		const edm::ESGetToken<GeometricDet, IdealGeometryRecord> geomDetESToken_;
+		const edm::ESGetToken<Propagator, TrackingComponentsRecord> propagatorESToken_;
+		// ---------------------------
+
 		std::vector<float> getSeedMva(
 			pairSeedMvaEstimator pairMvaEstimator,
 			const TrajectorySeed& seed,
@@ -161,7 +174,13 @@ MuonHLTSeedMVAClassifier::MuonHLTSeedMVAClassifier(const edm::ParameterSet& iCon
 
 	doSort_        (iConfig.getParameter<bool>("doSort")),
 	nSeedsMax_B_   (iConfig.getParameter<int>("nSeedsMax_B")),
-	nSeedsMax_E_   (iConfig.getParameter<int>("nSeedsMax_E"))
+	nSeedsMax_E_   (iConfig.getParameter<int>("nSeedsMax_E")),
+
+	trackerTopologyESToken_(esConsumes<TrackerTopology, TrackerTopologyRcd>()),
+	trackerGeometryESToken_(esConsumes<TrackerGeometry, TrackerDigiGeometryRecord>()),
+	magFieldESToken_(esConsumes<MagneticField, IdealMagneticFieldRecord>()),
+	geomDetESToken_(esConsumes<GeometricDet, IdealGeometryRecord>()),
+	propagatorESToken_(esConsumes<Propagator, TrackingComponentsRecord>(edm::ESInputTag("", "PropagatorWithMaterialParabolicMf")))
 {
 	produces<TrajectorySeedCollection>();
 
@@ -194,15 +213,9 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 {
 	auto result = std::make_unique<TrajectorySeedCollection>();
 
-	edm::ESHandle<TrackerGeometry> trkGeom;
-	iSetup.get<TrackerDigiGeometryRecord>().get(trkGeom);
-
-	edm::ESHandle<GeometricDet> geomDet;
-	iSetup.get<IdealGeometryRecord>().get(geomDet);
-
-	edm::ESHandle<TrackerTopology> trkTopo;
-	iSetup.get<TrackerTopologyRcd>().get(trkTopo);
-
+	edm::ESHandle<TrackerGeometry> trkGeom = iSetup.getHandle(trackerGeometryESToken_);
+	edm::ESHandle<GeometricDet> geomDet = iSetup.getHandle(geomDetESToken_);
+	edm::ESHandle<TrackerTopology> trkTopo = iSetup.getHandle(trackerTopologyESToken_);
 	GeometricSearchTrackerBuilder builder;
 	GeometricSearchTracker* geomTracker = builder.build(&(*geomDet), &(*trkGeom), &(*trkTopo));
 
@@ -218,11 +231,9 @@ void MuonHLTSeedMVAClassifier::produce(edm::Event& iEvent, const edm::EventSetup
 	edm::Handle< TrajectorySeedCollection > h_Seed;
 	bool hasSeed = iEvent.getByToken( t_Seed_, h_Seed );
 
-	edm::ESHandle<MagneticField> magfieldH;
-	iSetup.get<IdealMagneticFieldRecord>().get(magfieldH);
+	edm::ESHandle<MagneticField> magfieldH = iSetup.getHandle(magFieldESToken_);
 
-	edm::ESHandle<Propagator> propagatorAlongH;
-	iSetup.get<TrackingComponentsRecord>().get("PropagatorWithMaterialParabolicMf", propagatorAlongH);
+	edm::ESHandle<Propagator> propagatorAlongH = iSetup.getHandle(propagatorESToken_);
 	std::unique_ptr<Propagator> propagatorAlong = SetPropagationDirection(*propagatorAlongH, alongMomentum);
 
 	// if( !( hasL1 && hasL1TkMu && hasL2 && hasSeed ) ) {
