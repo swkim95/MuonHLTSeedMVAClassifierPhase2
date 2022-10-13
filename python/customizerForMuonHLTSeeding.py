@@ -1,6 +1,6 @@
 
 import FWCore.ParameterSet.Config as cms
-from HLTrigger.MuonHLTSeedMVAClassifier.mvaScale import *
+from HLTrigger.MuonHLTSeedMVAClassifierPhase2.mvaScale import *
 
 def customizerFuncForMuonHLTSeeding(
     process, newProcessName = "MYHLT", WPName = "TEST",
@@ -14,19 +14,19 @@ def customizerFuncForMuonHLTSeeding(
     print("mvaCuts_E: ", mvaCuts_E)
 
     # -- Seed MVA Classifiers
-    process.hltIter2Phase2L3FromL1TkMuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifier",
+    process.hltIter2Phase2L3FromL1TkMuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifierPhase2",
         src    = cms.InputTag("hltIter2Phase2L3FromL1TkMuonPixelSeeds", "", newProcessName),
         L1TkMu = cms.InputTag("L1TkMuons", "", newProcessName),
         L2Muon = cms.InputTag("hltL2MuonFromL1TkMuonCandidates", "", newProcessName),
 
-        mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU200_Barrel_NThltIter2FromL1_0.xml"),
-        mvaFile_B_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU200_Barrel_NThltIter2FromL1_1.xml"),
-        mvaFile_B_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU200_Barrel_NThltIter2FromL1_2.xml"),
-        mvaFile_B_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU200_Barrel_NThltIter2FromL1_3.xml"),
-        mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU200_Endcap_NThltIter2FromL1_0.xml"),
-        mvaFile_E_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU200_Endcap_NThltIter2FromL1_1.xml"),
-        mvaFile_E_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU200_Endcap_NThltIter2FromL1_2.xml"),
-        mvaFile_E_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifier/data/PU200_Endcap_NThltIter2FromL1_3.xml"),
+        mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/PU200_Barrel_NThltIter2FromL1_0.xml"),
+        mvaFile_B_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/PU200_Barrel_NThltIter2FromL1_1.xml"),
+        mvaFile_B_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/PU200_Barrel_NThltIter2FromL1_2.xml"),
+        mvaFile_B_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/PU200_Barrel_NThltIter2FromL1_3.xml"),
+        mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/PU200_Endcap_NThltIter2FromL1_0.xml"),
+        mvaFile_E_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/PU200_Endcap_NThltIter2FromL1_1.xml"),
+        mvaFile_E_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/PU200_Endcap_NThltIter2FromL1_2.xml"),
+        mvaFile_E_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/PU200_Endcap_NThltIter2FromL1_3.xml"),
 
         mvaScaleMean_B = cms.vdouble(PU200_Barrel_NThltIter2FromL1_ScaleMean),
         mvaScaleStd_B  = cms.vdouble(PU200_Barrel_NThltIter2FromL1_ScaleStd),

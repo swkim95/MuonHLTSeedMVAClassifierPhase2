@@ -1,4 +1,4 @@
-#include "HLTrigger/MuonHLTSeedMVAClassifier/interface/SeedMvaEstimator.h"
+#include "HLTrigger/MuonHLTSeedMVAClassifierPhase2/interface/SeedMvaEstimator.h"
 
 #include "DataFormats/Math/interface/deltaPhi.h"
 #include "DataFormats/Math/interface/deltaR.h"

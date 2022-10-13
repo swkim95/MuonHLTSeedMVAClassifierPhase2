@@ -3,6 +3,12 @@
 
 #include "DataFormats/Common/interface/Handle.h"
 
+#include "FWCore/Framework/interface/ConsumesCollector.h"
+#include "FWCore/Framework/interface/ESHandle.h"
+#include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Utilities/interface/ESGetToken.h"
+#include "FWCore/Utilities/interface/ESInputTag.h"
+
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeedCollection.h"
 #include "DataFormats/TrajectorySeed/interface/PropagationDirection.h"
@@ -30,6 +36,7 @@
 #include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
 #include "Geometry/Records/interface/TrackerTopologyRcd.h"
 
+#include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTobjCorrelator.h"
 
 typedef pair<const DetLayer*, TrajectoryStateOnSurface> LayerTSOS;
 typedef pair<const DetLayer*, const TrackingRecHit*> LayerHit;

@@ -2,7 +2,7 @@
 </export>
 
 <library file="*.cc" name="MuonHLTSeedingPlugins">
-  <use name="HLTrigger/MuonHLTSeedMVAClassifier"/>
+  <use name="HLTrigger/MuonHLTSeedMVAClassifierPhase2"/>
   <use name="FWCore/Framework"/>
   <use name="FWCore/Utilities"/>
   <use name="FWCore/ParameterSet"/>
