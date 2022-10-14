@@ -24,13 +24,13 @@ def customizerFuncForMuonHLTSeeding(
 
 
         mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Barrel_Binary_NThltIter2FromL1_0.xml"),
-        mvaFile_B_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Barrel_Binary_NThltIter2FromL1_1.xml"),
-        mvaFile_B_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Barrel_Binary_NThltIter2FromL1_2.xml"),
-        mvaFile_B_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Barrel_Binary_NThltIter2FromL1_3.xml"),
+        # mvaFile_B_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Barrel_Binary_NThltIter2FromL1_1.xml"),
+        # mvaFile_B_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Barrel_Binary_NThltIter2FromL1_2.xml"),
+        # mvaFile_B_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Barrel_Binary_NThltIter2FromL1_3.xml"),
         mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Endcap_Binary_NThltIter2FromL1_0.xml"),
-        mvaFile_E_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Endcap_Binary_NThltIter2FromL1_1.xml"),
-        mvaFile_E_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Endcap_Binary_NThltIter2FromL1_2.xml"),
-        mvaFile_E_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Endcap_Binary_NThltIter2FromL1_3.xml"),
+        # mvaFile_E_1 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Endcap_Binary_NThltIter2FromL1_1.xml"),
+        # mvaFile_E_2 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Endcap_Binary_NThltIter2FromL1_2.xml"),
+        # mvaFile_E_3 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Endcap_Binary_NThltIter2FromL1_3.xml"),
 
         mvaScaleMean_B = cms.vdouble(PU200_Barrel_NThltIter2FromL1_ScaleMean),
         mvaScaleStd_B  = cms.vdouble(PU200_Barrel_NThltIter2FromL1_ScaleStd),

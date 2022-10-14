@@ -97,13 +97,13 @@ class MuonHLTSeedMVAClassifierPhase2 : public edm::stream::EDProducer<> {
 		pairSeedMvaEstimator mvaEstimator;
 
 		edm::FileInPath mvaFile_B_0_;
-		edm::FileInPath mvaFile_B_1_;
-		edm::FileInPath mvaFile_B_2_;
-		edm::FileInPath mvaFile_B_3_;
+		// edm::FileInPath mvaFile_B_1_;
+		// edm::FileInPath mvaFile_B_2_;
+		// edm::FileInPath mvaFile_B_3_;
 		edm::FileInPath mvaFile_E_0_;
-		edm::FileInPath mvaFile_E_1_;
-		edm::FileInPath mvaFile_E_2_;
-		edm::FileInPath mvaFile_E_3_;
+		// edm::FileInPath mvaFile_E_1_;
+		// edm::FileInPath mvaFile_E_2_;
+		// edm::FileInPath mvaFile_E_3_;
 
 		std::vector<double> mvaScaleMean_B_;
 		std::vector<double> mvaScaleStd_B_;
@@ -156,13 +156,13 @@ MuonHLTSeedMVAClassifierPhase2::MuonHLTSeedMVAClassifierPhase2(const edm::Parame
 	t_L2Muon_(consumes<reco::RecoChargedCandidateCollection>(iConfig.getParameter<edm::InputTag>("L2Muon"))),
 
 	mvaFile_B_0_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_0")),
-	mvaFile_B_1_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_1")),
-	mvaFile_B_2_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_2")),
-	mvaFile_B_3_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_3")),
+	// mvaFile_B_1_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_1")),
+	// mvaFile_B_2_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_2")),
+	// mvaFile_B_3_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_3")),
 	mvaFile_E_0_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_0")),
-	mvaFile_E_1_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_1")),
-	mvaFile_E_2_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_2")),
-	mvaFile_E_3_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_3")),
+	// mvaFile_E_1_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_1")),
+	// mvaFile_E_2_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_2")),
+	// mvaFile_E_3_   (iConfig.getParameter<edm::FileInPath>("mvaFile_E_3")),
 
 	mvaScaleMean_B_(iConfig.getParameter<std::vector<double>>("mvaScaleMean_B")),
 	mvaScaleStd_B_ (iConfig.getParameter<std::vector<double>>("mvaScaleStd_B")),
@@ -186,13 +186,13 @@ MuonHLTSeedMVAClassifierPhase2::MuonHLTSeedMVAClassifierPhase2(const edm::Parame
 
 	mvaEstimator = {
 		make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_0_, mvaScaleMean_B_, mvaScaleStd_B_),
-		           new SeedMvaEstimatorPhase2(mvaFile_E_0_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-		make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_1_, mvaScaleMean_B_, mvaScaleStd_B_),
-		           new SeedMvaEstimatorPhase2(mvaFile_E_1_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-		make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_2_, mvaScaleMean_B_, mvaScaleStd_B_),
-		           new SeedMvaEstimatorPhase2(mvaFile_E_2_, mvaScaleMean_E_, mvaScaleStd_E_) ),
-		make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_3_, mvaScaleMean_B_, mvaScaleStd_B_),
-		           new SeedMvaEstimatorPhase2(mvaFile_E_3_, mvaScaleMean_E_, mvaScaleStd_E_) )
+		           new SeedMvaEstimatorPhase2(mvaFile_E_0_, mvaScaleMean_E_, mvaScaleStd_E_) )//,
+		// make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_1_, mvaScaleMean_B_, mvaScaleStd_B_),
+		//            new SeedMvaEstimatorPhase2(mvaFile_E_1_, mvaScaleMean_E_, mvaScaleStd_E_) ),
+		// make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_2_, mvaScaleMean_B_, mvaScaleStd_B_),
+		//            new SeedMvaEstimatorPhase2(mvaFile_E_2_, mvaScaleMean_E_, mvaScaleStd_E_) ),
+		// make_pair( new SeedMvaEstimatorPhase2(mvaFile_B_3_, mvaScaleMean_B_, mvaScaleStd_B_),
+		//            new SeedMvaEstimatorPhase2(mvaFile_E_3_, mvaScaleMean_E_, mvaScaleStd_E_) )
 	};
 }
 
@@ -419,7 +419,8 @@ std::vector<float> MuonHLTSeedMVAClassifierPhase2::getSeedMva(
 void MuonHLTSeedMVAClassifierPhase2::beginJob(){}
 
 void MuonHLTSeedMVAClassifierPhase2::endJob(){
-	for( int i=0; i<4; ++i ) {
+	// for( int i=0; i<4; ++i ) {
+	for( int i=0; i<1; ++i ) {
 		delete mvaEstimator.at(i).first;
 		delete mvaEstimator.at(i).second;
 	}
