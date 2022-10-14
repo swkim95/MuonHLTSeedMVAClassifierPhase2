@@ -117,12 +117,12 @@ class MuonHLTSeedMVAClassifierPhase2 : public edm::stream::EDProducer<> {
 		const int nSeedsMax_B_;
 		const int nSeedsMax_E_;
 
-		  // ------ For CMSSW_12 -------
+		// ------ For CMSSW_12 -------
 		const edm::ESGetToken<TrackerTopology, TrackerTopologyRcd> trackerTopologyESToken_;
 		const edm::ESGetToken<TrackerGeometry, TrackerDigiGeometryRecord> trackerGeometryESToken_;
-		// const edm::ESGetToken<MagneticField, IdealMagneticFieldRecord> magFieldESToken_;
-		// const edm::ESGetToken<GeometricDet, IdealGeometryRecord> geomDetESToken_;
-		// const edm::ESGetToken<Propagator, TrackingComponentsRecord> propagatorESToken_;
+		const edm::ESGetToken<MagneticField, IdealMagneticFieldRecord> magFieldESToken_;
+		const edm::ESGetToken<GeometricDet, IdealGeometryRecord> geomDetESToken_;
+		const edm::ESGetToken<Propagator, TrackingComponentsRecord> propagatorESToken_;
 		// ---------------------------
 
 		std::vector<float> getSeedMva(
@@ -177,10 +177,10 @@ MuonHLTSeedMVAClassifierPhase2::MuonHLTSeedMVAClassifierPhase2(const edm::Parame
 	nSeedsMax_E_   (iConfig.getParameter<int>("nSeedsMax_E")),
 
 	trackerTopologyESToken_(esConsumes<TrackerTopology, TrackerTopologyRcd>()),
-	trackerGeometryESToken_(esConsumes<TrackerGeometry, TrackerDigiGeometryRecord>())
-	// magFieldESToken_(esConsumes<MagneticField, IdealMagneticFieldRecord>()),
-	// geomDetESToken_(esConsumes<GeometricDet, IdealGeometryRecord>()),
-	// propagatorESToken_(esConsumes<Propagator, TrackingComponentsRecord>(edm::ESInputTag("", "PropagatorWithMaterialParabolicMf")))
+	trackerGeometryESToken_(esConsumes<TrackerGeometry, TrackerDigiGeometryRecord>()),
+	magFieldESToken_(esConsumes<MagneticField, IdealMagneticFieldRecord>()),
+	geomDetESToken_(esConsumes<GeometricDet, IdealGeometryRecord>()),
+	propagatorESToken_(esConsumes<Propagator, TrackingComponentsRecord>(edm::ESInputTag("", "PropagatorWithMaterialParabolicMf")))
 {
 	produces<TrajectorySeedCollection>();
 
@@ -213,17 +213,17 @@ void MuonHLTSeedMVAClassifierPhase2::produce(edm::Event& iEvent, const edm::Even
 {
 	auto result = std::make_unique<TrajectorySeedCollection>();
 
-	edm::ESHandle<TrackerGeometry> trkGeom;
-	iSetup.get<TrackerDigiGeometryRecord>().get(trkGeom);
-	//edm::ESHandle<TrackerGeometry> trkgeom = iSetup.getHandle(trackerGeometryESToken_);
+	// edm::ESHandle<TrackerGeometry> trkGeom;
+	// iSetup.get<TrackerDigiGeometryRecord>().get(trkGeom);
+	edm::ESHandle<TrackerGeometry> trkGeom = iSetup.getHandle(trackerGeometryESToken_);
 
-	edm::ESHandle<GeometricDet> geomDet;
-	iSetup.get<IdealGeometryRecord>().get(geomDet);
-	// edm::ESHandle<GeometricDet> geomDet = iSetup.getHandle(geomDetESToken_);
+	// edm::ESHandle<GeometricDet> geomDet;
+	// iSetup.get<IdealGeometryRecord>().get(geomDet);
+	edm::ESHandle<GeometricDet> geomDet = iSetup.getHandle(geomDetESToken_);
 	
-	edm::ESHandle<TrackerTopology> trkTopo;
-	iSetup.get<TrackerTopologyRcd>().get(trkTopo);
-	// edm::ESHandle<TrackerTopology> trkTopo = iSetup.getHandle(trackerTopologyESToken_);
+	// edm::ESHandle<TrackerTopology> trkTopo;
+	// iSetup.get<TrackerTopologyRcd>().get(trkTopo);
+	edm::ESHandle<TrackerTopology> trkTopo = iSetup.getHandle(trackerTopologyESToken_);
 
 	GeometricSearchTrackerBuilder builder;
 	GeometricSearchTracker* geomTracker = builder.build(&(*geomDet), &(*trkGeom), &(*trkTopo));
@@ -237,16 +237,18 @@ void MuonHLTSeedMVAClassifierPhase2::produce(edm::Event& iEvent, const edm::Even
 	edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon;
 	bool hasL2 = iEvent.getByToken( t_L2Muon_, h_L2Muon );
 
-	edm::Handle< TrajectorySeedCollection > h_Seed;
+	edm::Handle<TrajectorySeedCollection> h_Seed;
 	bool hasSeed = iEvent.getByToken( t_Seed_, h_Seed );
 
-	edm::ESHandle<MagneticField> magfieldH;
-	iSetup.get<IdealMagneticFieldRecord>().get(magfieldH);
-	// edm::ESHandle<MagneticField> magfieldH = iSetup.getHandle(magFieldESToken_);
+	std::cout << "hasSeed = " << hasSeed << std::endl;
 
-	edm::ESHandle<Propagator> propagatorAlongH;
-    iSetup.get<TrackingComponentsRecord>().get("PropagatorWithMaterialParabolicMf", propagatorAlongH);
-	// edm::ESHandle<Propagator> propagatorAlongH = iSetup.getHandle(propagatorESToken_);
+	// edm::ESHandle<MagneticField> magfieldH;
+	// iSetup.get<IdealMagneticFieldRecord>().get(magfieldH);
+	edm::ESHandle<MagneticField> magfieldH = iSetup.getHandle(magFieldESToken_);
+
+	// edm::ESHandle<Propagator> propagatorAlongH;
+    // iSetup.get<TrackingComponentsRecord>().get("PropagatorWithMaterialParabolicMf", propagatorAlongH);
+	edm::ESHandle<Propagator> propagatorAlongH = iSetup.getHandle(propagatorESToken_);
 	std::unique_ptr<Propagator> propagatorAlong = SetPropagationDirection(*propagatorAlongH, alongMomentum);
 
 	// if( !( hasL1 && hasL1TkMu && hasL2 && hasSeed ) ) {
