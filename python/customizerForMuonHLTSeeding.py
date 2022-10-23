@@ -18,6 +18,7 @@ def customizerFuncForMuonHLTSeeding(
         src    = cms.InputTag("hltIter2Phase2L3FromL1TkMuonPixelSeeds", "", newProcessName),
         # src    = cms.InputTag("hltIter2Phase2L3FromL1TkMuonPixelSeeds", "", "HLT"),
         L1TkMu = cms.InputTag("L1TkMuons", "", newProcessName),
+        # L1TkMu = cms.InputTag("hltL1TkMuons", "", newProcessName),
         # L1TkMu = cms.InputTag("L1TkMuons", "", "HLT"),
         L2Muon = cms.InputTag("hltL2MuonFromL1TkMuonCandidates", "", newProcessName),
         # L2Muon = cms.InputTag("hltL2MuonFromL1TkMuonCandidates", "", "HLT"),
@@ -50,35 +51,35 @@ def customizerFuncForMuonHLTSeeding(
     # process.hltIter2Phase2L3FromL1TkMuonCkfTrackCandidates.src = cms.InputTag("hltIter2Phase2L3FromL1TkMuonPixelSeedsFiltered", "", "HLT")
 
     # -- Sequences
-    process.HLTPhase2L3IOFromL1TkMuonTkCandidateSequence = cms.Sequence(
-        process.hltPhase2L3MuonPixelTracksFilter+
-        process.hltPhase2L3MuonPixelTracksFitter+
-        process.hltPhase2L3FromL1TkMuonPixelTracksTrackingRegions+
-        process.hltPhase2L3FromL1TkMuonPixelLayerQuadruplets+
-        process.hltPhase2L3FromL1TkMuonPixelTracksHitDoublets+
-        process.hltPhase2L3FromL1TkMuonPixelTracksHitQuadruplets+
-        process.hltPhase2L3FromL1TkMuonPixelTracks+
-        process.hltPhase2L3FromL1TkMuonPixelVertices+
-        process.hltPhase2L3FromL1TkMuonTrimmedPixelVertices+
-        process.hltIter0Phase2L3FromL1TkMuonPixelSeedsFromPixelTracks+
-        process.hltIter0Phase2L3FromL1TkMuonCkfTrackCandidates+
-        process.hltIter0Phase2L3FromL1TkMuonCtfWithMaterialTracks+
-        process.hltIter0Phase2L3FromL1TkMuonTrackCutClassifier+
-        process.hltIter0Phase2L3FromL1TkMuonTrackSelectionHighPurity+
-        process.hltIter2Phase2L3FromL1TkMuonClustersRefRemoval+
-        process.hltIter2Phase2L3FromL1TkMuonMaskedMeasurementTrackerEvent+
-        process.hltIter2Phase2L3FromL1TkMuonPixelLayerTriplets+
-        process.hltIter2Phase2L3FromL1TkMuonPixelClusterCheck+
-        process.hltIter2Phase2L3FromL1TkMuonPixelHitDoublets+
-        process.hltIter2Phase2L3FromL1TkMuonPixelHitTriplets+
-        process.hltIter2Phase2L3FromL1TkMuonPixelSeeds+
-        process.hltIter2Phase2L3FromL1TkMuonPixelSeedsFiltered+  # HERE
-        process.hltIter2Phase2L3FromL1TkMuonCkfTrackCandidates+
-        process.hltIter2Phase2L3FromL1TkMuonCtfWithMaterialTracks+
-        process.hltIter2Phase2L3FromL1TkMuonTrackCutClassifier+
-        process.hltIter2Phase2L3FromL1TkMuonTrackSelectionHighPurity+
-        process.hltIter2Phase2L3FromL1TkMuonMerged
-    )
+    # process.HLTPhase2L3IOFromL1TkMuonTkCandidateSequence = cms.Sequence(
+    #     process.hltPhase2L3MuonPixelTracksFilter+
+    #     process.hltPhase2L3MuonPixelTracksFitter+
+    #     process.hltPhase2L3FromL1TkMuonPixelTracksTrackingRegions+
+    #     process.hltPhase2L3FromL1TkMuonPixelLayerQuadruplets+
+    #     process.hltPhase2L3FromL1TkMuonPixelTracksHitDoublets+
+    #     process.hltPhase2L3FromL1TkMuonPixelTracksHitQuadruplets+
+    #     process.hltPhase2L3FromL1TkMuonPixelTracks+
+    #     process.hltPhase2L3FromL1TkMuonPixelVertices+
+    #     process.hltPhase2L3FromL1TkMuonTrimmedPixelVertices+
+    #     process.hltIter0Phase2L3FromL1TkMuonPixelSeedsFromPixelTracks+
+    #     process.hltIter0Phase2L3FromL1TkMuonCkfTrackCandidates+
+    #     process.hltIter0Phase2L3FromL1TkMuonCtfWithMaterialTracks+
+    #     process.hltIter0Phase2L3FromL1TkMuonTrackCutClassifier+
+    #     process.hltIter0Phase2L3FromL1TkMuonTrackSelectionHighPurity+
+    #     process.hltIter2Phase2L3FromL1TkMuonClustersRefRemoval+
+    #     process.hltIter2Phase2L3FromL1TkMuonMaskedMeasurementTrackerEvent+
+    #     process.hltIter2Phase2L3FromL1TkMuonPixelLayerTriplets+
+    #     process.hltIter2Phase2L3FromL1TkMuonPixelClusterCheck+
+    #     process.hltIter2Phase2L3FromL1TkMuonPixelHitDoublets+
+    #     process.hltIter2Phase2L3FromL1TkMuonPixelHitTriplets+
+    #     process.hltIter2Phase2L3FromL1TkMuonPixelSeeds+
+    #     process.hltIter2Phase2L3FromL1TkMuonPixelSeedsFiltered+  # HERE
+    #     process.hltIter2Phase2L3FromL1TkMuonCkfTrackCandidates+
+    #     process.hltIter2Phase2L3FromL1TkMuonCtfWithMaterialTracks+
+    #     process.hltIter2Phase2L3FromL1TkMuonTrackCutClassifier+
+    #     process.hltIter2Phase2L3FromL1TkMuonTrackSelectionHighPurity+
+    #     process.hltIter2Phase2L3FromL1TkMuonMerged
+    # )
 
     # -- DQMOutput and Ntupler
     # if hasattr(process, "DQMOutput"):
