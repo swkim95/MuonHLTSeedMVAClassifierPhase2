@@ -293,10 +293,10 @@ void MuonHLTSeedMVAClassifierPhase2::produce(edm::Event& iEvent, const edm::Even
 				0.5
 			);
 
-			float softmax = std::exp(mvas.at(3)) / ( std::exp(mvas.at(0)) + std::exp(mvas.at(1)) + std::exp(mvas.at(2)) + std::exp(mvas.at(3)) );
-
-			if(isB)  pairSeedIdxMvaScore_B.push_back( make_pair( i, softmax ) );
-			else     pairSeedIdxMvaScore_E.push_back( make_pair( i, softmax ) );
+			float logistic = 1 / ( 1 + std::exp(-mvas.at(0)) );
+			
+			if(isB)  pairSeedIdxMvaScore_B.push_back( make_pair( i, logistic ) );
+			else     pairSeedIdxMvaScore_E.push_back( make_pair( i, logistic ) );
 		}
 
 		std::sort(pairSeedIdxMvaScore_B.begin(), pairSeedIdxMvaScore_B.end(), sortByMvaScore );
@@ -350,11 +350,11 @@ void MuonHLTSeedMVAClassifierPhase2::produce(edm::Event& iEvent, const edm::Even
 				0.5
 			);
 
-			float softmax = std::exp(mvas.at(3)) / ( std::exp(mvas.at(0)) + std::exp(mvas.at(1)) + std::exp(mvas.at(2)) + std::exp(mvas.at(3)) );
+			float logistic = 1 / ( 1 + std::exp(-mvas.at(0)) );
 
 			bool passMva = (
-				(  isB && (softmax > mvaCut_B_) ) ||
-				( !isB && (softmax > mvaCut_E_) )
+				(  isB && (logistic > mvaCut_B_) ) ||
+				( !isB && (logistic > mvaCut_E_) )
 			);
 
 			if( passMva )  result->emplace_back( seed );
