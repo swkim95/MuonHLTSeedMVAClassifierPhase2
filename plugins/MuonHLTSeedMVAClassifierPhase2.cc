@@ -90,7 +90,7 @@ class MuonHLTSeedMVAClassifierPhase2 : public edm::stream::EDProducer<> {
 		// ----------member data ---------------------------
 		edm::EDGetTokenT<TrajectorySeedCollection>             t_Seed_;
 		// edm::EDGetTokenT<l1t::MuonBxCollection>                t_L1Muon_;
-		edm::EDGetTokenT<l1t::TkMuonCollection>                t_L1TkMu_;
+		edm::EDGetTokenT<l1t::TrackerMuonCollection>           t_L1TkMu_;
 		edm::EDGetTokenT<reco::RecoChargedCandidateCollection> t_L2Muon_;
 
 		typedef std::vector< std::pair<SeedMvaEstimatorPhase2*, SeedMvaEstimatorPhase2*> > pairSeedMvaEstimator;
@@ -130,7 +130,7 @@ class MuonHLTSeedMVAClassifierPhase2 : public edm::stream::EDProducer<> {
 			const TrajectorySeed& seed,
 			GlobalVector global_p,
 			GlobalPoint  global_x,
-			edm::Handle<l1t::TkMuonCollection>& h_L1TkMu,
+			edm::Handle<l1t::TrackerMuonCollection>& h_L1TkMu,
 			edm::ESHandle<MagneticField>& magfieldH,
 			const Propagator& propagatorAlong,
 			GeometricSearchTracker* geomTracker,
@@ -152,7 +152,7 @@ class MuonHLTSeedMVAClassifierPhase2 : public edm::stream::EDProducer<> {
 MuonHLTSeedMVAClassifierPhase2::MuonHLTSeedMVAClassifierPhase2(const edm::ParameterSet& iConfig):
 	t_Seed_(  consumes<TrajectorySeedCollection>            (iConfig.getParameter<edm::InputTag>("src"))),
 	// t_L1Muon_(consumes<l1t::MuonBxCollection>               (iConfig.getParameter<edm::InputTag>("L1Muon"))),
-	t_L1TkMu_(consumes<l1t::TkMuonCollection>               (iConfig.getParameter<edm::InputTag>("L1TkMu"))),
+	t_L1TkMu_(consumes<l1t::TrackerMuonCollection>          (iConfig.getParameter<edm::InputTag>("L1TkMu"))),
 	t_L2Muon_(consumes<reco::RecoChargedCandidateCollection>(iConfig.getParameter<edm::InputTag>("L2Muon"))),
 
 	mvaFile_B_0_   (iConfig.getParameter<edm::FileInPath>("mvaFile_B_0")),
@@ -231,7 +231,7 @@ void MuonHLTSeedMVAClassifierPhase2::produce(edm::Event& iEvent, const edm::Even
 	// edm::Handle<l1t::MuonBxCollection> h_L1Muon;
 	// bool hasL1 = iEvent.getByToken( t_L1Muon_, h_L1Muon);
 
-	edm::Handle<l1t::TkMuonCollection> h_L1TkMu;
+	edm::Handle<l1t::TrackerMuonCollection> h_L1TkMu;
 	bool hasL1TkMu = iEvent.getByToken( t_L1TkMu_, h_L1TkMu);
 
 	edm::Handle<reco::RecoChargedCandidateCollection> h_L2Muon;
@@ -369,7 +369,7 @@ std::vector<float> MuonHLTSeedMVAClassifierPhase2::getSeedMva(
 	const TrajectorySeed& seed,
 	GlobalVector global_p,
 	GlobalPoint  global_x,
-	edm::Handle<l1t::TkMuonCollection>& h_L1TkMu,
+	edm::Handle<l1t::TrackerMuonCollection>& h_L1TkMu,
 	edm::ESHandle<MagneticField>& magfieldH,
 	const Propagator& propagatorAlong,
 	GeometricSearchTracker* geomTracker,

@@ -47,7 +47,7 @@ SeedMvaEstimatorPhase2::~SeedMvaEstimatorPhase2() {}
 void SeedMvaEstimatorPhase2::getL1TTVariables( const TrajectorySeed& seed,
     GlobalVector global_p,
     GlobalPoint  global_x,
-    edm::Handle<l1t::TkMuonCollection> h_L1TkMu,
+    edm::Handle<l1t::TrackerMuonCollection> h_L1TkMu,
     float& DRL1TkMu,
     float& DPhiL1TkMu ) const {
 
@@ -129,7 +129,7 @@ vector< LayerTSOS > SeedMvaEstimatorPhase2::getTsosOnPixels(
 }
 
 vector< pair<LayerHit, LayerTSOS> > SeedMvaEstimatorPhase2::getHitTsosPairs( const TrajectorySeed& seed,
-    edm::Handle<l1t::TkMuonCollection> L1TkMuonHandle,
+    edm::Handle<l1t::TrackerMuonCollection> L1TkMuonHandle,
     edm::ESHandle<MagneticField>& magfieldH,
     const Propagator& propagatorAlong,
     GeometricSearchTracker* geomTracker
@@ -193,7 +193,7 @@ vector< pair<LayerHit, LayerTSOS> > SeedMvaEstimatorPhase2::getHitTsosPairs( con
 }
 
 void SeedMvaEstimatorPhase2::getHitL1TkVatiables( const TrajectorySeed& seed,
-    edm::Handle<l1t::TkMuonCollection> L1TkMuonHandle,
+    edm::Handle<l1t::TrackerMuonCollection> L1TkMuonHandle,
     edm::ESHandle<MagneticField>& magfieldH,
     const Propagator& propagatorAlong,
     GeometricSearchTracker* geomTracker,
@@ -292,7 +292,7 @@ void SeedMvaEstimatorPhase2::getHitL1TkVatiables( const TrajectorySeed& seed,
 float SeedMvaEstimatorPhase2::computeMva( const TrajectorySeed& seed,
     GlobalVector global_p,
     GlobalPoint  global_x,
-    edm::Handle<l1t::TkMuonCollection> h_L1TkMu,
+    edm::Handle<l1t::TrackerMuonCollection> h_L1TkMu,
     edm::ESHandle<MagneticField>& magfieldH,
     const Propagator& propagatorAlong,
     GeometricSearchTracker* geomTracker

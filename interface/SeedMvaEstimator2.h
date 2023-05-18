@@ -20,6 +20,7 @@
 
 #include "DataFormats/L1TCorrelator/interface/TkMuon.h"
 #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
+#include "DataFormats/L1TMuonPhase2/interface/TrackerMuon.h"
 
 #include <memory>
 #include <string>
@@ -56,7 +57,7 @@ public:
   float computeMva( const TrajectorySeed&,
     GlobalVector,
     GlobalPoint,
-    edm::Handle<l1t::TkMuonCollection>,
+    edm::Handle<l1t::TrackerMuonCollection>,
     edm::ESHandle<MagneticField>&,
     const Propagator&,
     GeometricSearchTracker*
@@ -77,13 +78,13 @@ private:
 
   vector< pair<LayerHit, LayerTSOS> > getHitTsosPairs(
     const TrajectorySeed&,
-    edm::Handle<l1t::TkMuonCollection>,
+    edm::Handle<l1t::TrackerMuonCollection>,
     edm::ESHandle<MagneticField>&,
     const Propagator&,
     GeometricSearchTracker*
   ) const;
 
-  void getL1TTVariables(   const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::TkMuonCollection>, float&, float& ) const;
-  void getHitL1TkVatiables( const TrajectorySeed&, edm::Handle<l1t::TkMuonCollection>, edm::ESHandle<MagneticField>&, const Propagator&, GeometricSearchTracker*, float&, float&, float&) const;
+  void getL1TTVariables(   const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::TrackerMuonCollection>, float&, float& ) const;
+  void getHitL1TkVatiables( const TrajectorySeed&, edm::Handle<l1t::TrackerMuonCollection>, edm::ESHandle<MagneticField>&, const Propagator&, GeometricSearchTracker*, float&, float&, float&) const;
 };
 #endif

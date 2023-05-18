@@ -16,6 +16,7 @@
 
 #include "DataFormats/L1TCorrelator/interface/TkMuon.h"
 #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
+#include "DataFormats/L1TMuonPhase2/interface/TrackerMuon.h"
 
 #include <memory>
 #include <string>
@@ -36,7 +37,7 @@ public:
     GlobalPoint,
     // edm::Handle<l1t::MuonBxCollection>,
     edm::Handle<reco::RecoChargedCandidateCollection>,
-    edm::Handle<l1t::TkMuonCollection>
+    edm::Handle<l1t::TrackerMuonCollection>
   ) const;
 
 private:
@@ -47,7 +48,7 @@ private:
 
   // void getL1MuonVariables( const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::MuonBxCollection>, float&, float&, float&, float& ) const;
   void getL2MuonVariables( const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<reco::RecoChargedCandidateCollection>, float&, float&, float&, float& ) const;
-  void getL1TTVariables(   const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::TkMuonCollection>, float&, float& ) const;
+  void getL1TTVariables(   const TrajectorySeed&, GlobalVector, GlobalPoint, edm::Handle<l1t::TrackerMuonCollection>, float&, float& ) const;
 };
 
 #endif
