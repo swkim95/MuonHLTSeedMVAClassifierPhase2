@@ -269,7 +269,8 @@ void MuonHLTSeedMVAClassifierPhase2::produce(edm::Event& iEvent, const edm::Even
 			GlobalPoint  global_x = trkGeom->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
 
 			// FIXME this should be configurable
-			bool isB = ( std::abs( global_p.eta() ) < 0.9 );
+			// bool isB = ( std::abs( global_p.eta() ) < 0.9 );
+			bool isB = ( std::abs( global_p.eta() ) < 1.2 );
 
 			if( isB && nSeedsMax_B_ < 0 ) {
 				result->emplace_back( seed );
@@ -326,7 +327,8 @@ void MuonHLTSeedMVAClassifierPhase2::produce(edm::Event& iEvent, const edm::Even
 			GlobalPoint  global_x = trkGeom->idToDet(seed.startingState().detId())->surface().toGlobal(seed.startingState().parameters().position());
 
 			// FIXME this should be configurable
-			bool isB = ( std::abs( global_p.eta() ) < 0.9 );
+			// bool isB = ( std::abs( global_p.eta() ) < 0.9 );
+			bool isB = ( std::abs( global_p.eta() ) < 1.2 );
 
 			if( isB && mvaCut_B_ <= 0. ) {
 				result->emplace_back( seed );
@@ -379,7 +381,8 @@ std::vector<float> MuonHLTSeedMVAClassifierPhase2::getSeedMva(
 
 	for(auto ic=0U; ic<pairMvaEstimator.size(); ++ic) {
 		// FIXME this should be configurable
-		if( fabs( global_p.eta() ) < 0.9 ) {
+		// if( fabs( global_p.eta() ) < 0.9 ) {
+		if( fabs( global_p.eta() ) < 1.2 ) {
 			float mva = pairMvaEstimator.at(ic).first->computeMva(
 				seed,
 				global_p,

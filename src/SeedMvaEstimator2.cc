@@ -16,23 +16,40 @@ using namespace std;
 ///////////////////////////
 
 // Phase2 enum namespace
+// namespace Phase2{
+//     enum inputIndexesPhase2 {
+//         kTsosErr0,          // 0
+//         kTsosErr2,          // 1
+//         kTsosErr5,          // 2
+//         kTsosErr9,          // 3
+//         kTsosErr14,         // 4
+//         kTsosDxdz,          // 5
+//         kTsosDydz,          // 6
+//         kTsosQbp,           // 7
+//         kTsosCharge,        // 8
+//         kDRdRL1TkMuSeedP,   // 9
+//         kDRdPhiL1TkMuSeedP, // 10
+//         kExpd2HitL1Tk1,     // 11
+//         kExpd2HitL1Tk2,     // 12
+//         kExpd2HitL1Tk3,     // 13
+//         kLast               // 14
+//     };
+// }
+
 namespace Phase2{
     enum inputIndexesPhase2 {
         kTsosErr0,          // 0
         kTsosErr2,          // 1
         kTsosErr5,          // 2
-        kTsosErr9,          // 3
-        kTsosErr14,         // 4
-        kTsosDxdz,          // 5
-        kTsosDydz,          // 6
-        kTsosQbp,           // 7
-        kTsosCharge,        // 8
-        kDRdRL1TkMuSeedP,   // 9
-        kDRdPhiL1TkMuSeedP, // 10
-        kExpd2HitL1Tk1,     // 11
-        kExpd2HitL1Tk2,     // 12
-        kExpd2HitL1Tk3,     // 13
-        kLast               // 14
+        kTsosDxdz,          // 3
+        kTsosDydz,          // 4
+        kTsosQbp,           // 5
+        kDRdRL1TkMuSeedP,   // 6
+        kDRdPhiL1TkMuSeedP, // 7
+        kExpd2HitL1Tk1,     // 8
+        kExpd2HitL1Tk2,     // 9
+        kExpd2HitL1Tk3,     // 10
+        kLast               // 11
     };
 }
 
@@ -303,12 +320,12 @@ float SeedMvaEstimatorPhase2::computeMva( const TrajectorySeed& seed,
     Phase2var[Phase2::kTsosErr0]   = seed.startingState().error(0);
     Phase2var[Phase2::kTsosErr2]   = seed.startingState().error(2);
     Phase2var[Phase2::kTsosErr5]   = seed.startingState().error(5);
-    Phase2var[Phase2::kTsosErr9]   = seed.startingState().error(9);
-    Phase2var[Phase2::kTsosErr14]  = seed.startingState().error(14);
+    // Phase2var[Phase2::kTsosErr9]   = seed.startingState().error(9);
+    // Phase2var[Phase2::kTsosErr14]  = seed.startingState().error(14);
     Phase2var[Phase2::kTsosDxdz]   = seed.startingState().parameters().dxdz();
     Phase2var[Phase2::kTsosDydz]   = seed.startingState().parameters().dydz();
     Phase2var[Phase2::kTsosQbp]    = seed.startingState().parameters().qbp();
-    Phase2var[Phase2::kTsosCharge] = seed.startingState().parameters().charge();
+    // Phase2var[Phase2::kTsosCharge] = seed.startingState().parameters().charge();
 
     // FIXME: should be configurable
     float initDRdPhi = 99999.;
