@@ -26,10 +26,12 @@ def customizerFuncForMuonHLTSeeding(
 
         # mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Barrel_Binary_NThltIter2FromL1_0.xml"),
         # mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/CMSSW_13_0_9_Barrel_Binary_NThltIter2FromL1_0.xml"),
-        mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/xgb_CMSSW_13_0_9_allData_updated_Barrel_NThltIter2FromL1_0.xml"),
+        # mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/xgb_CMSSW_13_0_9_allData_updated_Barrel_NThltIter2FromL1_0.xml"),
+        mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/xgb_CMSSW_13_0_9_allData_Try_05_Barrel_NThltIter2FromL1_0.xml"),
         # mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/DY_PU200_Endcap_Binary_NThltIter2FromL1_0.xml"),
         # mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/CMSSW_13_0_9_Endcap_Binary_NThltIter2FromL1_0.xml"),
-        mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/xgb_CMSSW_13_0_9_allData_updated_Endcap_NThltIter2FromL1_0.xml"),
+        # mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/xgb_CMSSW_13_0_9_allData_updated_Endcap_NThltIter2FromL1_0.xml"),
+        mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/xgb_CMSSW_13_0_9_allData_Try_05_Endcap_NThltIter2FromL1_0.xml"),
 
         mvaScaleMean_B = cms.vdouble(PU200_Barrel_NThltIter2FromL1_ScaleMean),
         mvaScaleStd_B  = cms.vdouble(PU200_Barrel_NThltIter2FromL1_ScaleStd),
