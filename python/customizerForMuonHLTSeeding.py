@@ -5,13 +5,15 @@ from HLTrigger.MuonHLTSeedMVAClassifierPhase2.mvaScale import *
 def customizerFuncForMuonHLTSeeding(
     process, newProcessName = "MYHLT", WPName = "TEST",
     doSort = False, nSeedsMax_B = (-1), nSeedsMax_E = (-1),
-    mvaCuts_B = (0), mvaCuts_E = (0) ):
+    mvaCuts_B = (0), mvaCuts_E = (0), etaEdge = (1.2), baseScore = (0.5) ):
 
     print("doSort: ", doSort)
     print("nSeedsMax_B: ", nSeedsMax_B)
     print("nSeedsMax_E: ", nSeedsMax_E)
     print("mvaCuts_B: ", mvaCuts_B)
     print("mvaCuts_E: ", mvaCuts_E)
+    print("etaEdge: ", etaEdge)
+    print("baseScore:", baseScore)
 
     # -- Seed MVA Classifiers
     process.hltIter2Phase2L3FromL1TkMuonPixelSeedsFiltered = cms.EDProducer("MuonHLTSeedMVAClassifierPhase2",
@@ -42,8 +44,11 @@ def customizerFuncForMuonHLTSeeding(
         nSeedsMax_B = cms.int32(nSeedsMax_B[0]),
         nSeedsMax_E = cms.int32(nSeedsMax_E[0]),
 
+        etaEdge  = cms.double(etaEdge[0]),
         mvaCut_B = cms.double(mvaCuts_B[0]),
-        mvaCut_E = cms.double(mvaCuts_E[0])
+        mvaCut_E = cms.double(mvaCuts_E[0]),
+
+        baseScore = cms.double(baseScore[0])
     )
 
     # -- Track Candidates

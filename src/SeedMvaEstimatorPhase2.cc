@@ -1,4 +1,4 @@
-#include "HLTrigger/MuonHLTSeedMVAClassifierPhase2/interface/SeedMvaEstimator2.h"
+#include "HLTrigger/MuonHLTSeedMVAClassifierPhase2/interface/SeedMvaEstimatorPhase2.h"
 
 #include "DataFormats/Math/interface/deltaPhi.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -9,32 +9,6 @@
 #include <cmath>
 
 using namespace std;
-
-
-/////////////////////////// 
-//Phase2 SeedMvaEstimator//
-///////////////////////////
-
-// Phase2 enum namespace
-// namespace Phase2{
-//     enum inputIndexesPhase2 {
-//         kTsosErr0,          // 0
-//         kTsosErr2,          // 1
-//         kTsosErr5,          // 2
-//         kTsosErr9,          // 3
-//         kTsosErr14,         // 4
-//         kTsosDxdz,          // 5
-//         kTsosDydz,          // 6
-//         kTsosQbp,           // 7
-//         kTsosCharge,        // 8
-//         kDRdRL1TkMuSeedP,   // 9
-//         kDRdPhiL1TkMuSeedP, // 10
-//         kExpd2HitL1Tk1,     // 11
-//         kExpd2HitL1Tk2,     // 12
-//         kExpd2HitL1Tk3,     // 13
-//         kLast               // 14
-//     };
-// }
 
 namespace Phase2{
     enum inputIndexesPhase2 {
@@ -53,21 +27,21 @@ namespace Phase2{
     };
 }
 
-SeedMvaEstimatorPhase2::SeedMvaEstimatorPhase2(const edm::FileInPath& weightsfile, std::vector<double> scale_mean, std::vector<double> scale_std) {
+SeedMvaEstimatorPhase2::SeedMvaEstimatorPhase2(const edm::FileInPath& weightsfile,
+                                               const std::vector<double>& scale_mean,
+                                               const std::vector<double>& scale_std)
+        :scale_mean_(scale_mean), scale_std_(scale_std) {
     gbrForest_  = createGBRForest(weightsfile);
-    scale_mean_ = scale_mean;
-    scale_std_  = scale_std;
 }
 
 SeedMvaEstimatorPhase2::~SeedMvaEstimatorPhase2() {}
 
-void SeedMvaEstimatorPhase2::getL1TTVariables( const TrajectorySeed& seed,
-    GlobalVector global_p,
-    GlobalPoint  global_x,
-    edm::Handle<l1t::TrackerMuonCollection> h_L1TkMu,
-    float& DRL1TkMu,
-    float& DPhiL1TkMu ) const {
-
+void SeedMvaEstimatorPhase2::getL1TTVariables(const TrajectorySeed& seed,
+                                              const GlobalVector& global_p,
+                                              const GlobalPoint&  global_x,
+                                              const edm::Handle<l1t::TrackerMuonCollection>& h_L1TkMu,
+                                              float& DRL1TkMu,
+                                              float& DPhiL1TkMu ) const {
     for(auto L1TkMu=h_L1TkMu->begin(); L1TkMu!=h_L1TkMu->end(); ++L1TkMu)
     {
         auto TkRef = L1TkMu->trkPtr();
@@ -80,17 +54,15 @@ void SeedMvaEstimatorPhase2::getL1TTVariables( const TrajectorySeed& seed,
     }
 }
 
-vector< LayerTSOS > SeedMvaEstimatorPhase2::getTsosOnPixels(
-    TTTrack<Ref_Phase2TrackerDigi_> l1tk,
-    edm::ESHandle<MagneticField>& magfieldH,
-    const Propagator& propagatorAlong,
-    GeometricSearchTracker* geomTracker
-) const {
+vector< LayerTSOS > SeedMvaEstimatorPhase2::getTsosOnPixels(const TTTrack<Ref_Phase2TrackerDigi_>& l1tk,
+                                                            const edm::ESHandle<MagneticField>& magfieldH,
+                                                            const Propagator& propagatorAlong,
+                                                            const GeometricSearchTracker& geomTracker) const {
     vector< LayerTSOS > v_tsos = {};
 
-    std::vector<BarrelDetLayer const*>  const&  bpix = geomTracker->pixelBarrelLayers();
-    std::vector<ForwardDetLayer const*> const& nfpix = geomTracker->negPixelForwardLayers();
-    std::vector<ForwardDetLayer const*> const& pfpix = geomTracker->posPixelForwardLayers();
+    std::vector<BarrelDetLayer const*>  const&  bpix = geomTracker.pixelBarrelLayers();
+    std::vector<ForwardDetLayer const*> const& nfpix = geomTracker.negPixelForwardLayers();
+    std::vector<ForwardDetLayer const*> const& pfpix = geomTracker.posPixelForwardLayers();
 
     int chargeTk = l1tk.rInv() > 0. ? 1 : -1;
     GlobalPoint  gpos = l1tk.POCA();
@@ -145,16 +117,14 @@ vector< LayerTSOS > SeedMvaEstimatorPhase2::getTsosOnPixels(
     return v_tsos;
 }
 
+// FIX HERE
 vector< pair<LayerHit, LayerTSOS> > SeedMvaEstimatorPhase2::getHitTsosPairs( const TrajectorySeed& seed,
-    edm::Handle<l1t::TrackerMuonCollection> L1TkMuonHandle,
-    edm::ESHandle<MagneticField>& magfieldH,
-    const Propagator& propagatorAlong,
-    GeometricSearchTracker* geomTracker
-) const {
+                                                                             const edm::Handle<l1t::TrackerMuonCollection>& L1TkMuonHandle,
+                                                                             const edm::ESHandle<MagneticField>& magfieldH,
+                                                                             const Propagator& propagatorAlong,
+                                                                             const GeometricSearchTracker& geomTracker) const {
     vector< pair<LayerHit, LayerTSOS> > out = {};
-
-    // FIXME: this is random choice
-    float av_dr_min = 20.;
+    float av_dr_min = 999.;
 
     // -- loop on L1TkMu
     for(auto L1TkMu=L1TkMuonHandle->begin(); L1TkMu!=L1TkMuonHandle->end(); ++L1TkMu) {
@@ -171,7 +141,6 @@ vector< pair<LayerHit, LayerTSOS> > SeedMvaEstimatorPhase2::getHitTsosPairs( con
         int ihit = 0;
 	for( const auto& hit : seed.recHits() ) {
             // -- look for closest tsos by absolute distance
-            // FIXME: this is random choice
             int the_tsos = -99999;
             float dr_min = 20.;
             for( auto i=0U; i<v_tsos.size(); ++i ) {
@@ -184,14 +153,13 @@ vector< pair<LayerHit, LayerTSOS> > SeedMvaEstimatorPhase2::getHitTsosPairs( con
                 }
             }
             if( the_tsos > -1 ) {
-                const DetLayer* thelayer =  geomTracker->idToLayer( hit.geographicalId() );
+                const DetLayer* thelayer =  geomTracker.idToLayer( hit.geographicalId() );
                 hitTsosPair.push_back( make_pair( make_pair( thelayer, &hit), v_tsos.at(the_tsos) ) );
             }
             ihit++;
         } // loop on recHits
         
         // -- find tsos for all recHits?
-        // FIXME: this is random choice
         if( (int)hitTsosPair.size() == ihit ) {
             float av_dr = 0.;
             for( auto it=hitTsosPair.begin(); it!=hitTsosPair.end(); ++it ) {
@@ -209,14 +177,14 @@ vector< pair<LayerHit, LayerTSOS> > SeedMvaEstimatorPhase2::getHitTsosPairs( con
     return out;
 }
 
-void SeedMvaEstimatorPhase2::getHitL1TkVatiables( const TrajectorySeed& seed,
-    edm::Handle<l1t::TrackerMuonCollection> L1TkMuonHandle,
-    edm::ESHandle<MagneticField>& magfieldH,
-    const Propagator& propagatorAlong,
-    GeometricSearchTracker* geomTracker,
-    float& expd2HitL1Tk1,
-    float& expd2HitL1Tk2,
-    float& expd2HitL1Tk3 ) const {
+void SeedMvaEstimatorPhase2::getHitL1TkVatiables(const TrajectorySeed& seed,
+                                                 const edm::Handle<l1t::TrackerMuonCollection>& L1TkMuonHandle,
+                                                 const edm::ESHandle<MagneticField>& magfieldH,
+                                                 const Propagator& propagatorAlong,
+                                                 const GeometricSearchTracker& geomTracker,
+                                                 float& expd2HitL1Tk1,
+                                                 float& expd2HitL1Tk2,
+                                                 float& expd2HitL1Tk3 ) const {
         vector< pair<LayerHit, LayerTSOS> > hitTsosPair = getHitTsosPairs(
             seed,    
             L1TkMuonHandle,
@@ -306,13 +274,13 @@ void SeedMvaEstimatorPhase2::getHitL1TkVatiables( const TrajectorySeed& seed,
         }
 }
 
-float SeedMvaEstimatorPhase2::computeMva( const TrajectorySeed& seed,
-    GlobalVector global_p,
-    GlobalPoint  global_x,
-    edm::Handle<l1t::TrackerMuonCollection> h_L1TkMu,
-    edm::ESHandle<MagneticField>& magfieldH,
-    const Propagator& propagatorAlong,
-    GeometricSearchTracker* geomTracker
+float SeedMvaEstimatorPhase2::computeMva(const TrajectorySeed& seed,
+                                         const GlobalVector& global_p,
+                                         const GlobalPoint&  global_x,
+                                         const edm::Handle<l1t::TrackerMuonCollection>& h_L1TkMu,
+                                         const edm::ESHandle<MagneticField>& magfieldH,
+                                         const Propagator& propagatorAlong,
+                                         const GeometricSearchTracker& geomTracker
 ) const {
     
     float Phase2var[Phase2::kLast]{};
@@ -320,12 +288,9 @@ float SeedMvaEstimatorPhase2::computeMva( const TrajectorySeed& seed,
     Phase2var[Phase2::kTsosErr0]   = seed.startingState().error(0);
     Phase2var[Phase2::kTsosErr2]   = seed.startingState().error(2);
     Phase2var[Phase2::kTsosErr5]   = seed.startingState().error(5);
-    // Phase2var[Phase2::kTsosErr9]   = seed.startingState().error(9);
-    // Phase2var[Phase2::kTsosErr14]  = seed.startingState().error(14);
     Phase2var[Phase2::kTsosDxdz]   = seed.startingState().parameters().dxdz();
     Phase2var[Phase2::kTsosDydz]   = seed.startingState().parameters().dydz();
     Phase2var[Phase2::kTsosQbp]    = seed.startingState().parameters().qbp();
-    // Phase2var[Phase2::kTsosCharge] = seed.startingState().parameters().charge();
 
     // FIXME: should be configurable
     float initDRdPhi = 99999.;
