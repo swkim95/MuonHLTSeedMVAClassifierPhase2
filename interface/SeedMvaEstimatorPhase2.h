@@ -32,8 +32,6 @@
 #include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
 #include "Geometry/Records/interface/TrackerTopologyRcd.h"
 
-#include "MuonHLTTool/MuonHLTNtupler/interface/MuonHLTobjCorrelator.h"
-
 #include <memory>
 #include <string>
 
