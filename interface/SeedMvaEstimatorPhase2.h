@@ -9,6 +9,8 @@
 #include "FWCore/Utilities/interface/ESGetToken.h"
 #include "FWCore/Utilities/interface/ESInputTag.h"
 
+#include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
+
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeed.h"
 #include "DataFormats/TrajectorySeed/interface/TrajectorySeedCollection.h"
 #include "DataFormats/TrajectorySeed/interface/PropagationDirection.h"
@@ -29,7 +31,6 @@
 #include "RecoTracker/TkDetLayers/interface/GeometricSearchTrackerBuilder.h"
 #include "Geometry/TrackerNumberingBuilder/interface/GeometricDet.h"
 #include "Geometry/Records/interface/IdealGeometryRecord.h"
-#include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
 #include "Geometry/Records/interface/TrackerTopologyRcd.h"
 
 #include <memory>
@@ -51,7 +52,7 @@ public:
                          const std::vector<double>& scale_std );
   ~SeedMvaEstimatorPhase2();
 
-  float computeMva(const TrajectorySeed&,
+  double computeMva(const TrajectorySeed&,
                    const GlobalVector&,
                    const GlobalPoint&,
                    const edm::Handle<l1t::TrackerMuonCollection>&,
@@ -75,7 +76,7 @@ private:
                                                       const Propagator&,
                                                       const GeometricSearchTracker&) const;
 
-  void getL1TTVariables(   const TrajectorySeed&, const GlobalVector&, const GlobalPoint&, const edm::Handle<l1t::TrackerMuonCollection>&, float&, float& ) const;
+  void getL1TTVariables( const TrajectorySeed&, const GlobalVector&, const GlobalPoint&, const edm::Handle<l1t::TrackerMuonCollection>&, float&, float& ) const;
   void getHitL1TkVatiables( const TrajectorySeed&, const edm::Handle<l1t::TrackerMuonCollection>&, const edm::ESHandle<MagneticField>&, const Propagator&, const GeometricSearchTracker&, float&, float&, float&) const;
 };
 #endif

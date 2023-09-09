@@ -1,4 +1,4 @@
-#include "HLTrigger/MuonHLTSeedMVAClassifierPhase2/interface/SeedMvaEstimatorPhase2.h"
+#include "RecoMuon/TrackerSeedGenerator/interface/SeedMvaEstimatorPhase2.h"
 
 #include "DataFormats/Math/interface/deltaPhi.h"
 #include "DataFormats/Math/interface/deltaR.h"
@@ -274,7 +274,7 @@ void SeedMvaEstimatorPhase2::getHitL1TkVatiables(const TrajectorySeed& seed,
         }
 }
 
-float SeedMvaEstimatorPhase2::computeMva(const TrajectorySeed& seed,
+double SeedMvaEstimatorPhase2::computeMva(const TrajectorySeed& seed,
                                          const GlobalVector& global_p,
                                          const GlobalPoint&  global_x,
                                          const edm::Handle<l1t::TrackerMuonCollection>& h_L1TkMu,
@@ -292,7 +292,6 @@ float SeedMvaEstimatorPhase2::computeMva(const TrajectorySeed& seed,
     Phase2var[Phase2::kTsosDydz]   = seed.startingState().parameters().dydz();
     Phase2var[Phase2::kTsosQbp]    = seed.startingState().parameters().qbp();
 
-    // FIXME: should be configurable
     float initDRdPhi = 99999.;
 
     float DRL1TkMuSeedP = initDRdPhi;

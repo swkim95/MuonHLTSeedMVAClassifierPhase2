@@ -53,10 +53,10 @@
 #include "DataFormats/TrackerCommon/interface/TrackerTopology.h"
 #include "Geometry/Records/interface/TrackerTopologyRcd.h"
 
-#include "HLTrigger/MuonHLTSeedMVAClassifierPhase2/interface/SeedMvaEstimatorPhase2.h"
+#include "RecoMuon/TrackerSeedGenerator/interface/SeedMvaEstimatorPhase2.h"
 
 // class declaration
-bool sortByMvaScore(const std::pair<unsigned, double> &A, const std::pair<unsigned, double> &B) {
+bool sortByMvaScorePhase2(const std::pair<unsigned, double> &A, const std::pair<unsigned, double> &B) {
 	return (A.second > B.second);
 };
 
@@ -221,8 +221,8 @@ void MuonHLTSeedMVAClassifierPhase2::produce(edm::Event& iEvent, const edm::Even
 			else     pairSeedIdxMvaScore_E.push_back( make_pair( i, logistic ) );
 		}
 
-		std::sort(pairSeedIdxMvaScore_B.begin(), pairSeedIdxMvaScore_B.end(), sortByMvaScore );
-		std::sort(pairSeedIdxMvaScore_E.begin(), pairSeedIdxMvaScore_E.end(), sortByMvaScore );
+		std::sort(pairSeedIdxMvaScore_B.begin(), pairSeedIdxMvaScore_B.end(), sortByMvaScorePhase2 );
+		std::sort(pairSeedIdxMvaScore_E.begin(), pairSeedIdxMvaScore_E.end(), sortByMvaScorePhase2 );
 
 		for( auto i=0U; i<pairSeedIdxMvaScore_B.size(); ++i ) {
 			if((int)i == nSeedsMax_B_)  break;

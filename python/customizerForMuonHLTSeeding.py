@@ -1,6 +1,6 @@
 
 import FWCore.ParameterSet.Config as cms
-from HLTrigger.MuonHLTSeedMVAClassifierPhase2.mvaScale import *
+from RecoMuon.TrackerSeedGenerator.mvaScale import *
 
 def customizerFuncForMuonHLTSeeding(
     process, newProcessName = "MYHLT", WPName = "TEST",
@@ -22,8 +22,8 @@ def customizerFuncForMuonHLTSeeding(
         L2Muon = cms.InputTag("hltL2MuonFromL1TkMuonCandidates", "", newProcessName),
 
 
-        mvaFile_B_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/xgb_Barrel_NThltIter2FromL1_0.xml"),
-        mvaFile_E_0 = cms.FileInPath("HLTrigger/MuonHLTSeedMVAClassifierPhase2/data/xgb_Endcap_NThltIter2FromL1_0.xml"),
+        mvaFile_B_0 = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/xgb_Phase2_Barrel_NThltIter2FromL1_0.xml"),
+        mvaFile_E_0 = cms.FileInPath("RecoMuon/TrackerSeedGenerator/data/xgb_Phase2_Endcap_NThltIter2FromL1_0.xml"),
 
         mvaScaleMean_B = cms.vdouble(PU200_Barrel_NThltIter2FromL1_ScaleMean),
         mvaScaleStd_B  = cms.vdouble(PU200_Barrel_NThltIter2FromL1_ScaleStd),
